@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Template and notification section -->
+    <data noupdate="0">
+    	<!-- 
+    	<record id="account.email_template_edi_invoice" model="mail.template">
+            <field name="name">Invoice: Send by email</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="email_from">${object.user_id.email_formatted |safe}</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="subject">${object.company_id.name} Invoice (Ref ${object.number or 'n/a'})</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Dear ${object.partner_id.name}
+        % if object.partner_id.parent_id:
+            (${object.partner_id.parent_id.name})
+        % endif
+        <br /><br />
+        Here is your 
+        % if object.number:
+            invoice <strong>${object.number}</strong>
+        % else:
+            invoice
+        %endif
+        % if object.origin:
+            (with reference: ${object.origin})
+        % endif
+        amounting in <strong>${format_amount(object.amount_total, object.currency_id)}</strong>
+        from ${object.company_id.name}.
+        % if object.state=='paid':
+            This invoice is already paid.
+        % else:
+            Please remit payment at your earliest convenience.
+        % endif
+        <br /><br />
+        Do not hesitate to contact us if you have any question.
+    </p>
+</div>
+            </field>
+            <field name="report_template" ref="invoice_report_modify_ext.dhaif_account_invoices"/>
+            <field name="report_name">Invoice_${(object.number or '').replace('/','_')}${object.state == 'draft' and '_draft' or ''}</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    	 -->
+    	
+        <record id="email_template_edi_policy" model="mail.template">
+            <field name="name">Policy Order: Send to Customer</field>
+            <field name="model_id" ref="dhaif_insurance_service_ext.model_insurance_policy"/>
+            <field name="email_from">${object.user_id.email_formatted |safe}</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="subject">${object.company_id.name} ${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} (Ref ${object.name or 'n/a' })</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        % set doc_name = 'quotation' if object.state in ('draft', 'sent') else 'order'
+        Dear ${object.partner_id.name}
+        % if object.partner_id.parent_id:
+            (${object.partner_id.parent_id.name})
+        % endif
+        <br /><br />
+        Here is
+        % if ctx.get('proforma')
+            in attachment your pro-forma invoice
+        % else
+            the ${doc_name} <strong>${object.name}</strong>
+        % endif
+        % if object.origin:
+            (with reference: ${object.origin} )
+        % endif
+        amounting in <strong>${format_amount(object.amount_total, object.pricelist_id.currency_id)}</strong>
+        from ${object.company_id.name}.
+        <br /><br />
+        Do not hesitate to contact us if you have any question.
+    </p>
+</div>
+            </field>
+            <field name="report_template" ref="action_report_insuranceorder"/>
+            <field name="report_name">${(object.name or '').replace('/','_')}</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+        
+        <record id="email_template_edi_policy_orderform" model="mail.template">
+            <field name="name">Policy Order: Send to Insurance Company</field>
+            <field name="model_id" ref="invoice_report_modify_ext.model_sample_order_form_wizard"/>
+            <field name="email_from">${object.user_id.email_formatted |safe}</field>
+            <field name="partner_to">${object.insur_company_id.id}</field>
+            <field name="subject">${object.company_id.name} Order Form (Ref ${object.policy_order_name or 'n/a' })</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        
+        Dear ${object.insur_company_id.name}
+        <br /><br />
+        Here is the Order Form (Ref <strong>${object.policy_order_name}</strong>)
+        from ${object.company_id.name}.
+        <br /><br />
+        Do not hesitate to contact us if you have any question.
+        
+    </p>
+</div>
+            </field>
+            <field name="report_template" ref="action_report_insurance_orderform"/>
+            <field name="report_name">Order Form</field>
+            <field name="lang">${object.insur_company_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

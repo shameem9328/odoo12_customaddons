@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="sample_orderform_wizard_form">
+            <field name="name">sample.order.form.wizard.form</field>
+            <field name="model">sample.order.form.wizard</field>
+            <field name="groups_id" eval="[(4,ref('base.group_user'))]"/>
+            <field name="arch" type="xml">
+                <form string="Sample Order Form">
+                    <group>
+                        <field name="insur_company_id" options="{'no_create': True}"/>
+                        <field name="policy_order_id" invisible="1"/>
+                        <field name="policy_order_name" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="user_id" invisible="1"/>
+					</group>
+                    
+                    <footer>
+                        <button string="Print" name="print_sample_orderform" type="object" class="btn-primary o_mail_send"/>
+                        <button name="action_orderform_send" string="Send by Email" type="object"/>
+                        <button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+                </form>
+            </field>
+        </record>
+		
+    </data>
+</odoo>

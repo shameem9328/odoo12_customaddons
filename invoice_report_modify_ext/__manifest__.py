@@ -9,11 +9,17 @@
     'description': """
 This module for modify invoice report.
     """,
-    'depends': ['account','base'],
+    'depends': ['account','base','dhaif_insurance_service_ext'],
     'data': [
         'views/report_invoice.xml',
         'views/report_templates.xml',
-        
+        'views/insurance_report_templates.xml',
+        'views/report.xml',
+        'views/report_payment_receipt_templates.xml',
+        'views/report_sample_orderform.xml',
+        'views/insurance_policy_views.xml',
+        'wizard/sample_orderform.xml',
+        'data/mail_data.xml',
     ],
     'installable': True,
     'auto_install': False,

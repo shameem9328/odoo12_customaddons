@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		
+        <record id="view_order_form_insur_inherit_orderform" model="ir.ui.view">
+            <field name="name">insurance.policy.form</field>
+            <field name="model">insurance.policy</field>
+            <field name="inherit_id" ref="dhaif_insurance_service_ext.view_order_form_insur"/> 
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_confirm']" position="before">
+                    <button name="action_quotation_send" string="Send by Email" type="object" states="draft"/>
+                    <button name="action_sample_orderform"
+                        string="Sample Order Form" type="object" class="btn-primary"
+                        attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
+                                        
+                </xpath>
+            </field>
+        </record>
+		
+		
+</odoo>

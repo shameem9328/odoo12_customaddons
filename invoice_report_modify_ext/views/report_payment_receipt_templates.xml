@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_payment_receipt_document_custom">
+        <t t-call="invoice_report_modify_ext.custom_external_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+            <div class="page">
+            	<br/>
+                <h3><strong>Payment Receipt: <span t-field="o.name"/></strong></h3>
+                <div class="row mt64">
+                    <div class="col-6" t-if="o.payment_date">
+                        <strong>Payment Date: </strong> <span t-field="o.payment_date"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6" t-if="o.partner_type">
+                        <t t-if="o.partner_type == 'customer'">
+                            <strong>Customer: </strong>
+                        </t>
+                        <t t-if="o.partner_type == 'supplier'">
+                            <strong>Vendor: </strong>
+                        </t><span t-field="o.partner_id"/>
+                    </div>
+                    <div class="col-6" t-if="o.payment_method_id">
+                        <strong>Payment Method: </strong><span t-field="o.payment_method_id.name"/>
+                    </div>
+                </div>
+                <div class="row mb64">
+                    <div class="col-6" t-if="o.amount">
+                        <strong>Payment Amount: </strong><span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                     </div>
+                    <div class="col-6" t-if="o.communication">
+                        <strong>Memo: </strong><span t-field="o.communication"/>
+                     </div>
+                </div>
+                <table class="table table-sm" style="font-size:14px">
+                    <thead>
+                        <tr>
+                            <th><span>Invoice Date</span></th>
+                            <th><span>Invoice Number</span></th>
+                            <th><span>Policy Number</span></th>
+                            <th><span>Insured Name</span></th>
+                            <th class="text-right"><span>Original Amount</span></th>
+                            <th class="text-right"><span>Amount Paid</span></th>
+                            <th class="text-right"><span>Balance</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.reconciled_invoice_ids" t-as="inv">
+                            <td><span t-field="inv.date_invoice"/></td>
+                            <td><span t-field="inv.number"/></td>
+                            <td><span t-field="inv.policy_no"/></td>
+                            <td><span t-field="inv.insured_person"/></td>
+                            <td class="text-right"><span t-field="inv.amount_total"/></td>
+                            <td class="text-right"><span t-esc="o._get_invoice_payment_amount(inv)" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
+                            <td class="text-right"><span t-field="inv.residual"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-4  float-right"> 
+	                <table class="table table-sm;page-break-inside: avoid;">
+	                    <tr class="border-black o_subtotal" style="">
+	                        <td><strong>Total</strong></td>
+	                        <td class="text-right">
+	                            <span t-field="o.amount"/>
+	                        </td>
+	                    </tr>
+                    </table>
+               	</div>                        
+                                            
+                <div id="total" class="row">
+		            <div class="col-12 text-right">
+		            <br/>
+		           	( <strong>
+						<span t-esc="o.currency_id.amount_to_text(o.amount)"/>
+			        </strong> )
+		           	</div>
+		        </div>
+	            <div class="row mt64">
+	                <div class="col-12" t-if="o.note">
+	                    <strong>Note: </strong><span t-field="o.note" />
+	                </div>
+	            </div>
+	            <br/><br/>
+	            <div class="row" style="margin-top:20px;">
+					<div class="text-center float-right col-4" style="font-size: 15px;height:100px;">
+						For <strong><span t-field="o.company_id"/></strong> 
+						<div STYLE="background-color:#000000; height:1px; width:100%;"/>
+						<br/><strong><span t-esc="user.name"/></strong> 
+					</div>
+					<div style='font-size: 15px;height:100px;text-center;' class='float-left col-4 text-center'>
+						<strong>
+							Approved by
+						</strong>
+						<div STYLE="background-color:#000000; height:1px; width:100%;margin-bottom:2px;"/>
+					</div>
+					<div style='font-size: 15px;height:100px;text-center;' class='float-left col-4 text-center'>
+						<strong>
+							Customer Signature
+						</strong>
+						<div STYLE="background-color:#000000; height:1px; width:100%;margin-bottom:2px;"/>
+					</div>
+				</div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_payment_receipt_custom">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang"/>
+                <t t-call="invoice_report_modify_ext.report_payment_receipt_document_custom" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>
