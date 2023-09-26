@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+    	
+        <!-- invoice -->
+        
+        <report
+            id="account.account_invoices"
+            model="account.invoice"
+            string="Invoices"
+            report_type="qweb-pdf"
+            name="manar_custom_reports.report_invoice_with_payments"
+            file="manar_custom_reports.report_invoice_with_payments"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            paperformat="manar_custom_reports.paperformat_euro_custom_2"
+        />
+
+        <report
+            id="account.account_invoices_without_payment"
+            model="account.invoice"
+            string="Invoices without Payment"
+            report_type="qweb-pdf"
+            name="manar_custom_reports.report_invoice"
+            file="manar_custom_reports.report_invoice"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            paperformat="manar_custom_reports.paperformat_euro_custom_2"
+        />
+        
+       <report
+            id="account_invoices"
+            model="account.invoice"
+            string="Invoices(without letterhead)"
+            report_type="qweb-pdf"
+            name="manar_custom_reports.report_invoice_with_payments_without_letterhead"
+            file="manar_custom_reports.report_invoice_with_payments_without_letterhead"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            paperformat="manar_custom_reports.paperformat_euro_custom"
+        />
+
+        <report
+            id="account_invoices_without_payment"
+            model="account.invoice"
+            string="Invoices without Payment(without letterhead)"
+            report_type="qweb-pdf"
+            name="manar_custom_reports.report_invoice_without_letterhead"
+            file="manar_custom_reports.report_invoice_without_letterhead"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            paperformat="manar_custom_reports.paperformat_euro_custom"
+        />
+
+        <report
+            id="action_report_saleorder_without_letterhead"
+            string="Quotation / Order(without letterhead)"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="manar_custom_reports.report_saleorder_without_letterhead"
+            name="manar_custom_reports.report_saleorder_without_letterhead"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+
+
+          <report
+            id="sale.action_report_saleorder"
+            string="Quotation / Order"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="sale.report_saleorder"
+            name="sale.report_saleorder"
+             paperformat="manar_custom_reports.sale_order_paperformat_euro_custom_2"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+
+
+        <report
+            string="Purchase Order(without letterhead)"
+            id="action_report_purchase_order_without_letterhead"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            name="manar_custom_reports.report_purchaseorder_without_letterhead"
+            file="manar_custom_reports.report_purchaseorder_without_letterhead"
+            print_report_name="
+                (object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+        />
+
+        <report
+            string="Delivery Slip(without letterhead)"
+            id="action_report_delivery_without_letterhead"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="manar_custom_reports.report_deliveryslip_without_letterhead"
+            file="manar_custom_reports.report_deliveryslip_without_letterhead"
+            print_report_name="'Delivery Slip - %s - %s' % (object.partner_id.name or '', object.name)"
+        />
+
+        <report
+            id="action_report_payment_receipt_without_letterhead"
+            model="account.payment"
+            string="Payment Receipt(without letterhead)"
+            report_type="qweb-pdf"
+            name="manar_custom_reports.report_payment_receipt_without_letterhead"
+            file="manar_custom_reports.report_payment_receipt_without_letterhead"
+            menu="True"
+        />
+        
+    </data>
+</odoo>

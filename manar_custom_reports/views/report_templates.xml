@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Assets for reports -->
+    <template id="web.external_layout_standard">
+        <div class="header">
+        	<!--  
+            <div class="row">
+                <div class="col-12 mb4">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 180px;max-width:100%;" alt="Logo"/>
+                </div>
+               
+                <div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>
+            	
+            </div>
+            -->
+            <!--  
+            <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6" name="company_address">
+                    <div t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                    />
+                </div>
+            </div>
+            -->
+            <t t-set="font_size_val" t-value="13"/>
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+            <link href="https://fonts.googleapis.com/css2?family=Amiri&amp;display=swap" rel="stylesheet"/>
+            <div class="row">
+
+                 <div class="col-4" name="company_address" t-attf-style="font-size: #{font_size_val}px;font-family: 'Amiri', serif;">
+                     <table class="table table-borderless" cellpadding="0" cellspacing="0" padding="0" style="padding: 0px; width: 100%;height: 100%; border-collapse:collapse;border-spacing: 0px;">
+                        <tbody>
+                            <tr>
+                                <td style="padding: 0px;"><span><i class="fa fa-whatsapp"/></span><span>&amp;nbsp;17 555535</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px;">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Whatsapp For Orders - <span dir="rtl">واتساب الطلبات</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px;"><span><i class="fa fa-edit"/></span><span>&amp;nbsp;66 722273</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px;">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Complains &amp; Suggestions - <span dir="rtl">الاقتراحات و الشكاوي</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px;"><i class="fa fa-instagram"/>&amp;nbsp;Almanarbakery</td>
+                            </tr>
+                        </tbody>
+                     </table>
+                 </div>
+                 <div class="col-4" t-attf-style="font-size: #{font_size_val}px;font-family: 'Amiri', serif;text-align: center;">
+                     <img src="/manar_custom_reports/static/img/almanar_logo.png" style="height: 110px;width: 80%" alt="Logo"/>
+                     <br/>
+                     <strong>VAT No. <t t-esc="company.vat"/></strong>
+                 </div>
+                 <div class="col-4" name="company_details" t-attf-style="font-size: #{font_size_val}px;font-family: 'Amiri', serif;">
+                     <table class="table table-borderless" cellpadding="0" cellspacing="0" padding="0" style="padding: 0px; width: 100%;height: 100%; border-collapse:collapse;border-spacing: 0px;">
+                        <tbody>
+                            <tr>
+                                <td style="padding: 0px;">Jidhafs</td>
+                                <td style="padding: 0px;"><span>:</span> 17555535</td>
+                                <td style="padding: 0px;"><span>:</span> <span dir="rtl">جدحفص</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px;">Jid Ali</td>
+                                <td style="padding: 0px;"><span>:</span> 17625454</td>
+                                <td style="padding: 0px;"><span>:</span> <span dir="rtl">جدعلي</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px;">A'ali</td>
+                                <td style="padding: 0px;"><span>:</span> 17644455</td>
+                                <td style="padding: 0px;"><span>:</span> <span dir="rtl">عالي</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px;">Segaya</td>
+                                <td style="padding: 0px;"><span>:</span> 17499944</td>
+                                <td style="padding: 0px;"><span>:</span> <span dir="rtl">السقية</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px;" colspan="3">Almanarbakery@Almanarbackery.com</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px;" colspan="2">P.O. Box : 864 </td>
+                                <td style="padding: 0px;"><span dir="rtl">ص.ب : ٨٦٤</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px;" colspan="2">Kindom of Bahrain</td>
+                                <td style="padding: 0px;"><span dir="rtl">مملكة البحرين</span></td>
+                            </tr>
+                        </tbody>
+                     </table>
+                 </div>
+
+            </div>
+        </div>
+
+        <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+<!--        <div class="footer o_standard_footer">-->
+<!--            <div class="text-center" style="border-top: 1px solid black;">-->
+<!--            	&lt;!&ndash;  -->
+<!--                <ul class="list-inline mb4">-->
+<!--                    <li t-if="company.phone" class="list-inline-item">Phone: <span t-field="company.phone"/></li>-->
+<!--                    <li t-if="company.email" class="list-inline-item">Email: <span t-field="company.email"/></li>-->
+<!--                    <li t-if="company.website" class="list-inline-item">Web: <span t-field="company.website"/></li>-->
+<!--                    <li t-if="company.vat" class="list-inline-item"><t t-esc="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="company.vat"/></li>-->
+<!--                </ul>-->
+<!--				-->
+<!--				<ul class="list-inline mb4">-->
+<!--	                	 -->
+<!--	                    <li t-if="company.phone" class="list-inline-item">Tel: <span t-field="company.phone"/></li>-->
+<!--	                    <li t-if="company.fax" class="list-inline-item">Fax: <span t-field="company.fax"/></li>-->
+<!--	                    <li t-if="company.zip" class="list-inline-item">P.O.BOX: <span t-field="company.zip"/></li>-->
+<!--	                    -->
+<!--	                    <li t-if="company.street" class="list-inline-item"><span t-field="company.street"/></li>-->
+<!--	                    <li t-if="company.street2" class="list-inline-item"><span t-field="company.street2"/></li>-->
+<!--	                    -->
+<!--	                    <li t-if="company.city" class="list-inline-item"><span t-field="company.city"/></li>-->
+<!--	                    <li t-if="company.state_id" class="list-inline-item"><span t-field="company.state_id"/></li>-->
+<!--	                    <li t-if="company.country_id" class="list-inline-item"><span t-field="company.country_id"/></li>-->
+<!--	                    <li t-if="company.company_registry" class="list-inline-item">C.R No: <span t-field="company.company_registry"/></li>-->
+<!--	                    <li t-if="company.email" class="list-inline-item">E-mail: <span t-field="company.email"/></li>-->
+<!--	                    <li t-if="company.website" class="list-inline-item">Web: <span t-field="company.website"/></li>-->
+<!--	        			-->
+<!--	                     -->
+<!--	                    <li t-if="company.vat" class="list-inline-item"><t t-esc="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="company.vat"/></li>-->
+<!--	                	-->
+<!--	                </ul>-->
+<!--	                -->
+<!--                <div name="financial_infos">-->
+<!--                    <span t-field="company.report_footer"/>-->
+<!--                </div>-->
+<!--			&ndash;&gt;-->
+<!--                <div t-if="report_type == 'pdf'" class="text-muted">-->
+<!--                    Page: <span class="page"/> / <span class="topage"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div class="footer o_standard_footer">
+	            <div class="text-center">
+                    <t t-if="doc_model == 'sale.order'">
+                        <div class="row" width="100%">
+						<div class="col-6">
+							<div>
+								Please read the terms and conditions on your receipt:<br/>
+								1) To postpone or cancel any order, only through whatsapp on 17555535 or through visiting one of our branches.<br/>
+								2) It’s not permitted to change or cancel any order on the same day.<br/>
+								3) Customer is not eligible to get a refund incase of order cancellation on the same day.<br/>
+								4) We can’t offer a refund or exchange on any goods sold.<br/>
+								5) Validity of this quotation is only 7 days.<br/>
+							</div>
+						</div>
+						<div class="col-6">
+							<div dir="rtl">
+								يرجى الإطلاع على الشروط والأحكام في الفاتورة :<br/>
+								1)للتأجيل او إلغاء الطلب فقط على الرقم 17555535 او من خلال زيارة احد فروعنا<br/>
+								2)عذرا لا يسمح بتغيير او إلغاء الطلب في نفس يوم الاستلام .<br/>
+								3)لا يحق للزبون المطالبة بإسترجاع المبلغ المدفوع إذا تم إلغاء الطلبية في نفس اليوم المحدد للطلبية .<br/>
+								4) البضاعة المستلمة غير قابلة للترجيع او التبديل<br/>
+								5) صلاحية هذه التسعيرة لغاية 7 أيام<br/>
+							</div>
+						</div>
+					</div>
+                    </t>
+
+	                <div t-if="report_type == 'pdf'" class="text-muted">
+	                    Page: <span class="page"/> / <span class="topage"/>
+	                </div>
+	            </div>
+	        </div>
+
+    </template>
+    
+</odoo>
