@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <record id="sale_order_view_form" model="ir.ui.view">
+         <field name="name">sale.order.form.inherit.coupon</field>
+         <field name="model">sale.order</field>
+         <field name="inherit_id" ref="sale.view_order_form" />
+         <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_cancel']" position="before">
+                <button name="coupon_apply_code_from_pos" string="Apply Coupon" type="object" states="draft" groups="sale_coupon_customize.group_sale_coupon_from_pos"/>
+            </xpath>
+             <xpath expr="//form/sheet/notebook/page/field[@name='order_line']/form/group/group/field[@name='price_unit']" position="after">
+                 <field name="pos_coupon_code" attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+             </xpath>
+         </field>
+    </record>
+
+</odoo>

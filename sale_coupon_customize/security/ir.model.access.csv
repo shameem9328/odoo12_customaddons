@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+voucher_sale_usr,access_voucher_sale_usr,vouchers_pos.model_gift_voucher_pos,sales_team.group_sale_salesman,1,0,0,0
+coupon_sale_usr,access_coupon_sale_usr,vouchers_pos.model_gift_coupon_pos,sales_team.group_sale_salesman,1,0,0,0
+partner_coupon_sale_usr,access_partner_coupon_sale_usr,vouchers_pos.model_partner_coupon_pos,sales_team.group_sale_salesman,1,0,0,0
