@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="external_layout_standard">
+        <div class="header" t-if="show_header">
+
+            <div class="row">
+                <div class="col-12">
+                <img t-if="company.header_image" t-att-src="image_data_uri(company.header_image)" style="height:174px;width:100%;" alt="Header"/>
+            	</div>
+            </div>
+                <!--
+                <div class="col-2">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="height:140px;width:140px;" alt="Logo"/>
+                </div>
+                <div class="col-5 text-center" style="margin-top:12px;">
+            		<p class="text-center float-left" style="font-weight:bold;padding-left:0px;margin-left:0px;">
+            			<span style="font-size:21px;font-family:Verdana, Arial,sans-serif;">خدمــــــــــات رفــــــاق ش ش و</span><br/>
+                        <span style="font-size:27px;font-family:Verdana, Arial,sans-serif;">REFACS SERVICES S.P.C</span>
+            			<span style="font-weight:normal;font-color:black;font-size:16px;" t-if="show_company_tag">
+	            			<span t-field="company.report_header"/>
+            			</span>
+            		</p>
+            	</div>
+            	<div class="col-5 text-right" name="company_address" style="font-weight:bold;font-size:14px;font-style:italic;margin:0px;">
+                    <p style="margin:0" t-if="company.street" t-field="company.street"/>
+                    <p style="margin:0" t-if="company.street2 or company.country_id">
+                    	<span style="margin:0" t-if="company.street2" t-field="company.street2"/>
+                    	<span t-if="company.country_id and company.street2">
+                    		, 
+                    	</span>
+                    	<span t-if="company.country_id" t-field="company.country_id"/>
+                    </p>
+                    <p style="margin:0" t-if="company.city" t-field="company.city"/>
+                    <p style="margin:0" t-if="company.phone">
+                    	PHONE : <span t-field="company.phone"/>
+                    </p>
+                    <p style="margin:0" t-if="company.partner_id.mobile">
+                    	MOB : <span t-field="company.partner_id.mobile"/>
+                    </p>
+                    <p style="margin:0" t-if="company.fax">
+                    	FAX : <span t-field="company.fax"/>
+                    </p>
+                    <p style="margin:0;font-weight:normal;" t-if="company.email">
+                        <span t-set="my_email" t-value="company.email.split(',')"/>
+                        <t t-set="i" t-value="0"/>
+                        <t t-foreach="my_email" t-as="em">
+                            <t t-set="i" t-value="i+1"/>
+                            <u><span t-esc="em"/></u>
+                            <t t-if="i != len(my_email)"><br/></t>
+                        </t>
+
+                    </p>
+                    <p style="margin:0;" t-if="company.company_registry or company.zip">
+                    	<t t-if="company.company_registry">
+                    		CR : <span t-field="company.company_registry"/>
+                    	</t>
+                    	<t t-if="company.company_registry and company.zip">, </t>
+                    	<t t-if="company.zip">
+                    		PO BOX : <span t-field="company.zip"/>
+                    	</t>
+                    	
+                    </p>
+                    <p style="margin:0;" t-if="company.vat">
+                    	VAT # <span t-field="company.vat"/>
+                    </p>
+                </div>
+            </div>
+            -->
+            <div style="margin-top:5px;" t-if="company.header_image" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+                </div>
+            </div>
+            <!--  
+            <div class="row">
+                <div class="col-6" name="company_address">
+                    <div t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                    />
+                </div>
+            </div>
+            -->
+        </div>
+
+        <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer o_standard_footer" t-if="show_footer">
+        	<div class="row">
+        		<div class="col-12">
+                    <img t-if="company.footer_image" t-att-src="image_data_uri(company.footer_image)" style="height:150px;width:100%;" alt="Footer"/>
+                    <!--<img src="refacs_custom_reports/static/src/img/footer_img1.png" style="width:100%;height:150px"/>-->
+                </div>
+        	</div>
+        	<!--  
+        	<div class="row">
+                <div class="col-3">
+                    <img src="refacs_custom_reports/static/src/img/COPELAND.png" style="width:210px;height:90px"/>
+                </div>
+                <div class="col-3">
+                    <img src="refacs_custom_reports/static/src/img/lawton.png" style="width:170px;height:90px"/>
+                </div>
+                <div class="col-3">
+                    <img src="refacs_custom_reports/static/src/img/lu-ve.png" style="width:170px;height:80px"/>
+                </div>
+                <div class="col-3">
+                    <img src="refacs_custom_reports/static/src/img/us motors.png" style="width:140px;height:80px;"/>
+                </div>
+             </div>
+             <div class="row">
+                <div class="col-3">
+                    <img src="refacs_custom_reports/static/src/img/kimmko.jpg" style="width:170px;height:80px"/>
+                </div>
+                <div class="col-3">
+                    <img src="refacs_custom_reports/static/src/img/emerson.png" style="width:180px;height:80px"/>
+                </div>
+                 <div class="col-3">
+                    <img src="refacs_custom_reports/static/src/img/honey well.png" style="width:180px;height:80px"/>
+                </div>
+                <div class="col-2">
+                    <img src="refacs_custom_reports/static/src/img/elco.png" style="width:160px;height:80px"/>
+                </div>
+             </div>
+             -->
+        	<!--  
+            <div class="text-center" style="border-top: 1px solid black;">
+                <ul class="list-inline mb4">
+                    <li t-if="company.phone" class="list-inline-item">Phone: <span t-field="company.phone"/></li>
+                    <li t-if="company.email" class="list-inline-item">Email: <span t-field="company.email"/></li>
+                    <li t-if="company.website" class="list-inline-item">Web: <span t-field="company.website"/></li>
+                    <li t-if="company.vat" class="list-inline-item"><t t-esc="(company.country_id.vat_label or 'Tax ID').replace(' ','\N{NO-BREAK SPACE}')"/>: <span t-esc="company.vat.replace(' ','\N{NO-BREAK SPACE}')"/></li>
+                </ul>
+
+                <div name="financial_infos">
+                    <span t-field="company.report_footer"/>
+                </div>
+
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+            -->
+        </div>
+    </template>
+
+</odoo>

@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+    	<report 
+            id="sale.action_report_saleorder"
+            string="Quotation / Order"
+            model="sale.order" 
+            report_type="qweb-pdf"
+            file="sale.report_saleorder" 
+            name="sale.report_saleorder"
+            menu="False"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+        
+    	<!-- paperformat="refacs_custom_reports.paperformat_euro_custom" -->
+    	<report 
+            id="action_report_saleorder"
+            string="Quotation / Order"
+            model="sale.order" 
+            report_type="qweb-pdf"
+            file="refacs_custom_reports.report_saleorder" 
+            name="refacs_custom_reports.report_saleorder"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        	paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        <report
+            id="action_report_saleorder_without_logo"
+            string="Quotation / Order (Without Logo)"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="refacs_custom_reports.report_saleorder_without_logo"
+            name="refacs_custom_reports.report_saleorder_without_logo"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        	paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        <!-- invoice -->
+        
+        <report
+            id="account.account_invoices"
+            model="account.invoice"
+            string="Invoices"
+            report_type="qweb-pdf"
+            name="account.report_invoice_with_payments"
+            file="account.report_invoice_with_payments"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            menu="False"
+        />
+
+        <report
+            id="account.account_invoices_without_payment"
+            model="account.invoice"
+            string="Invoices without Payment"
+            report_type="qweb-pdf"
+            name="account.report_invoice"
+            file="account.report_invoice"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(objeLOCAL PURCHASE ORDERct._get_report_base_filename())"
+            menu="False"
+        />
+        
+       <report
+            id="account_invoices_with_logo"
+            model="account.invoice"
+            string="Invoices (With Logo)"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_invoice_with_payments_with_logo"
+            file="refacs_custom_reports.report_invoice_with_payments_with_logo"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        <report
+            id="account_invoices_without_logo"
+            model="account.invoice"
+            string="Invoices (Without Logo)"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_invoice_with_payments_without_logo"
+            file="refacs_custom_reports.report_invoice_with_payments_without_logo"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        <report
+            id="account_invoices_without_payment_with_logo"
+            model="account.invoice"
+            string="Invoices without Payment (With Logo)"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_invoice_with_logo"
+            file="refacs_custom_reports.report_invoice_with_logo"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        
+        <report
+            id="account_invoices_without_payment_without_logo"
+            model="account.invoice"
+            string="Invoices without Payment (Without Logo)"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_invoice_without_logo"
+            file="refacs_custom_reports.report_invoice_without_logo"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+
+        <!-- purchase -->
+        
+        <report 
+            string="purchase.Purchase Order" 
+            id="purchase.action_report_purchase_order" 
+            model="purchase.order" 
+            report_type="qweb-pdf"
+            name="purchase.report_purchaseorder" 
+            file="purchase.report_purchaseorder"
+            print_report_name="
+                (object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+            menu="False"
+        />
+
+       
+        
+        <report 
+            string="Purchase Order (With Logo)" 
+            id="action_report_purchase_order_with_logo" 
+            model="purchase.order" 
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_purchaseorder_with_logo" 
+            file="refacs_custom_reports.report_purchaseorder_with_logo"
+            print_report_name="
+                (object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+            paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+           
+        />
+        <report
+            string="Purchase Order (Without Logo)"
+            id="action_report_purchase_order_without_logo"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_purchaseorder_without_logo"
+            file="refacs_custom_reports.report_purchaseorder_without_logo"
+            print_report_name="
+                (object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+            paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+       
+       <report 
+            string="Local Purchase Order (With Logo)" 
+            id="action_report_lop_with_logo" 
+            model="purchase.order" 
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_lpo_with_logo" 
+            file="refacs_custom_reports.report_lpo_with_logo"
+            print_report_name="
+                (object.state in ('draft', 'sent') and 'Local Request for Quotation - %s' % (object.name) or
+                'Local Purchase Order - %s' % (object.name))"
+            paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+           
+        />
+        <report
+            string="Local Purchase Order (Without Logo)"
+            id="action_report_lop_without_logo"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_lpo_without_logo"
+            file="refacs_custom_reports.report_lpo_without_logo"
+            print_report_name="
+                (object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Local Purchase Order - %s' % (object.name))"
+            paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+
+        />
+        
+        <!-- delivery note -->
+        
+        <report
+            string="Delivery Slip"
+            id="stock.action_report_delivery"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="stock.report_deliveryslip"
+            file="stock.report_deliveryslip"
+            print_report_name="'Delivery Note - %s - %s' % (object.partner_id.name or '', object.name)"
+        	menu="False"
+        />
+        
+        <report
+            string="Delivery Order"
+            id="action_report_delivery"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_deliveryslip"
+            file="refacs_custom_reports.report_deliveryslip"
+            print_report_name="'Delivery Order - %s - %s' % (object.partner_id.name or '', object.name)"
+        	paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        <report
+            string="Delivery Order (Without Logo)"
+            id="action_report_delivery_without_logo"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_deliveryslip_without_logo"
+            file="refacs_custom_reports.report_deliveryslip_without_logo"
+            print_report_name="'Delivery Order - %s - %s' % (object.partner_id.name or '', object.name)"
+        	paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        <report
+            string="Received Note"
+            id="action_report_received_note"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_receivednote"
+            file="refacs_custom_reports.report_receivednote"
+            print_report_name="'Material Received Note - %s - %s' % (object.partner_id.name or '', object.name)"
+        	paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        <report
+            string="Received Note (Without Logo)"
+            id="action_report_received_note_without_logo"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_receivednote_without_logo"
+            file="refacs_custom_reports.report_receivednote_without_logo"
+            print_report_name="'Material Received Note - %s - %s' % (object.partner_id.name or '', object.name)"
+        	paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        <report
+            string="Movement Note"
+            id="action_report_movement_note"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_movementnote"
+            file="refacs_custom_reports.report_movementnote"
+            print_report_name="'Material Movement Note - %s - %s' % (object.partner_id.name or '', object.name)"
+        	paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        <report
+            string="Movement Note (Without Logo)"
+            id="action_report_movement_note_without_logo"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_movementnote_without_logo"
+            file="refacs_custom_reports.report_movementnote_without_logo"
+            print_report_name="'Material Movement Note - %s - %s' % (object.partner_id.name or '', object.name)"
+        	paperformat="refacs_custom_reports.paperformat_euro_custom_2"
+        />
+        <!-- payment receipt -->
+        <report
+            id="account.action_report_payment_receipt"
+            model="account.payment"
+            string="Payment Receipt"
+            report_type="qweb-pdf"
+            name="account.report_payment_receipt"
+            file="account.report_payment_receipt"
+            menu="False"
+        />
+        
+        <report
+            id="action_report_payment_receipt"
+            model="account.payment"
+            string="Receipt / Payment Voucher"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_payment_receipt"
+            file="refacs_custom_reports.report_payment_receipt"
+            menu="True"
+            paperformat="refacs_custom_reports.paperformat_a5_custom"
+            print_report_name="(object.payment_type in ('inbound') and 'Receipt Voucher - %s' % (object.name)) or 'Payment Voucher - %s' % (object.name)"
+        />
+        <report
+            id="action_report_payment_receipt_with_logo"
+            model="account.payment"
+            string="Receipt / Payment Voucher (With Logo)"
+            report_type="qweb-pdf"
+            name="refacs_custom_reports.report_payment_receipt_with_logo"
+            file="refacs_custom_reports.report_payment_receipt_with_logo"
+            menu="True"
+            paperformat="refacs_custom_reports.paperformat_euro_custom"
+            print_report_name="(object.payment_type in ('inbound') and 'Receipt Voucher - %s' % (object.name)) or 'Payment Voucher - %s' % (object.name)"
+        />
+        <!-- reoair - job order -->
+        <report 
+            string="Quotation / Order" 
+            id="repair.action_report_repair_order"
+            model="repair.order"
+            name="repair.report_repairorder2"
+            file="repair.report_repairorder"
+            report_type="qweb-pdf"
+            print_report_name="(
+                object.state == 'draft' and 'Repair Quotation - %s' % (object.name) or
+                'Repair Order - %s' % (object.name))"
+            menu='False'
+        />
+        <report 
+            string="Job Order" 
+            id="action_report_repair_order"
+            model="repair.order"
+            name="refacs_custom_reports.report_repairorder2"
+            file="refacs_custom_reports.report_repairorder"
+            report_type="qweb-pdf"
+            print_report_name="(
+                object.state == 'draft' and 'Job Quotation - %s' % (object.name) or
+                'Job Order - %s' % (object.name))"
+            paperformat="refacs_custom_reports.paperformat_euro_custom"
+        />
+        <report
+            string="Job Order (Without Logo)"
+            id="action_report_repair_order_without_logo"
+            model="repair.order"
+            name="refacs_custom_reports.report_repairorder2_without_logo"
+            file="refacs_custom_reports.report_repairorder_without_logo"
+            report_type="qweb-pdf"
+            print_report_name="(
+                object.state == 'draft' and 'Job Quotation - %s' % (object.name) or
+                'Job Order - %s' % (object.name))"
+        />
+    </data>
+</odoo>

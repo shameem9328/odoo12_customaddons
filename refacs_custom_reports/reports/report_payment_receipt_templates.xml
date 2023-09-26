@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_payment_receipt_document">
+        <!--<t t-call="web.basic_layout">-->
+		<t t-call="refacs_custom_reports.external_layout_standard">
+			<t t-if="not company">
+	            <!-- Multicompany -->
+	            <t t-if="company_id">
+	                <t t-set="company" t-value="company_id"/>
+	            </t>
+	            <t t-elif="o and 'company_id' in o">
+	                <t t-set="company" t-value="o.company_id.sudo()"/>
+	            </t>
+	            <t t-else="else">
+	                <t t-set="company" t-value="res_company"/>
+	            </t>
+	        </t>
+
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+            <style>
+             p.nospacing
+	                {
+	                    margin: 0;
+	                }
+			        .table th,
+					.table td {
+					  padding: 0.20rem;
+					   border:none;
+					}
+					.table th
+					 {
+						font-size:14px;
+						 border:none;
+					}
+					
+					.table td
+					{
+						font-size:14px;
+						 border:none;
+						
+					}
+					
+					td.sign_footer
+					{
+					padding: 0.15rem;
+					 border:none;
+					}
+					
+					
+					table.table-bordered{
+                        border:1px solid black;
+                    }
+                    table.table-bordered > thead > tr > th{
+                        border:1px solid black;
+                    }
+                    table.table-bordered > tbody > tr > td > th{
+                        border:1px solid black;
+                    }
+	                p.nospacing
+	                {
+	                    margin: 0;
+	                }
+			        .table-bordered th,
+					.table-bordered td {
+					  padding: 0.20rem;
+					  border:1px solid black;
+					}
+					.table-bordered th
+					 {
+						font-size:14px;
+						border:1px solid black;
+					}
+					
+					.table-bordered td
+					{
+						font-size:14px;
+						border:1px solid black;
+					}
+					
+					td.sign_footer
+					{
+					padding: 0.15rem;
+					border-top:0px;
+					}
+				
+			</style>
+            <div class="page">
+                <h3 class='text-center' style="font-weight:bold;" t-if="o.payment_type == 'inbound'">
+                	RECEIPT VOUCHER
+                </h3>
+                 <h3 class='text-center' style="font-weight:bold;" t-if="o.payment_type == 'outbound'">
+                	PAYMENT VOUCHER
+                </h3>
+                <!--  
+                <div class="row mt64">
+                    <div class="col-6" t-if="o.payment_date">
+                        <strong>Payment Date: </strong> <span t-field="o.payment_date"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6" t-if="o.partner_type">
+                        <t t-if="o.partner_type == 'customer'">
+                            <strong>Customer: </strong>
+                        </t>
+                        <t t-if="o.partner_type == 'supplier'">
+                            <strong>Vendor: </strong>
+                        </t><span t-field="o.partner_id"/>
+                    </div>
+                    <div class="col-6" t-if="o.payment_method_id">
+                        <strong>Payment Method: </strong><span t-field="o.payment_method_id.name"/>
+                    </div>
+                </div>
+                <div class="row mb64">
+                    <div class="col-6" t-if="o.amount">
+                        <strong>Payment Amount: </strong><span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                     </div>
+                    <div class="col-6" t-if="o.communication">
+                        <strong>Memo: </strong><span t-field="o.communication"/>
+                     </div>
+                </div>
+                -->
+                <div class="row">
+                	<div class="col-8">
+                		<p class='nospacing'>
+                			<span>
+                				<span t-if="o.payment_type == 'inbound'">Received From : </span>
+                				<span t-if="o.payment_type == 'outbound'">Paid To : </span>
+                				<strong>
+                					<span t-field="o.partner_id"/>
+                				</strong>
+                			</span>
+                		</p>
+                		<p class='nospacing'>
+                			Amount : 
+                			<strong>
+                				<span t-esc="o.currency_id.amount_to_str(o.amount)" />
+                			</strong>
+                			<span style="margin-left:20px;" t-esc="o.currency_id.amount_to_text(o.amount)"/>
+                		</p>
+                		<p class='nospacing'>
+                			<span t-if="o.journal_id.type in ['cash']">Cash : </span>
+                			<span t-if="o.journal_id.type in ['bank']">Bank : </span>
+                			<span t-field="o.journal_id.name" />
+                			<span t-if="o.payment_method_code == 'check_printing' and o.check_number != 0" style="margin-left:100px;">
+                				Cheque # 
+                			</span>
+                			<span t-if="o.payment_method_code == 'check_printing' and o.check_number != 0" t-esc="o.check_number"/>
+                			
+                			
+                		</p>
+                		<p class='nospacing' t-if="o.communication">
+                			Memo : <span t-field="o.communication"/>
+                		</p>
+                	</div>
+                	<div class='col-4'>
+                		<p class='nospacing'>
+                			Voucher # <span t-field="o.name"/>
+                		</p>
+                		<p class='nospacing'>
+                			Date : <span t-field="o.payment_date"/>
+                		</p>
+                		<!--  
+                		<p class='nospacing' t-if="o.communication">
+                			Memo : <span t-field="o.communication"/>
+                		</p>
+                		-->
+                	</div>
+                </div>
+                <div class='row'>
+                	<div class="col-12">
+                		<div style="border-top: 1px dotted;width:100%;"/>
+                	</div>
+                </div>
+                <div class="row" style="margin-top:15px;">
+                	<div class="col-2"/>
+                	<div class="col-8">
+	                	<table class="table table-bordered">
+	                		<tbody>
+	                			<tr style="font-weight:bold;" >
+	                				<td colspan='5' style='border-bottom:none;'>
+	                					Receipt Against
+	                				</td>
+	                			</tr>
+	                			<tr>
+	                				<td style="border:none;" t-if="o.payment_type == 'inbound'">Trans. No</td>
+	                				<td style="border:none;" t-if="o.payment_type == 'outbound'">PV</td>
+	                				<td style="border:none;">Date</td>
+	                				<td style="border:none;" class='text-right'>Amount</td>
+	                				<td style="border:none;" class='text-right'>Payment</td>
+	                				<td style="border:none;" class='text-right'>Balance</td>
+	                				
+	                			</tr>
+	                			<t t-set="sl_no" t-value="0"/>
+	                			<tr t-foreach="o.reconciled_invoice_ids" t-as="inv">
+	                				<t t-set="sl_no" t-value="sl_no + 1"/>
+	                				<t t-if="sl_no == 1">
+	                					<t t-set="style_row" t-value="'border-left:none;border-right:none;border-bottom:none;'"/>
+	                				</t>
+	                				<t t-else="">
+	                					<t t-set="style_row" t-value="'border:none;'"/>
+	                				</t>
+	                				<td t-att-style="style_row">
+		                            	<span t-field="inv.number"/>
+		                            </td>
+		                            <td t-att-style="style_row">
+		                            	<span t-field="inv.date_invoice"/>
+		                            </td>
+		                            <td class="text-right" t-att-style="style_row">
+		                            	<span t-esc="inv.get_amount_in_currency(inv.amount_total)"/>
+		                            </td>
+		                            <td class="text-right" t-att-style="style_row">
+		                            	<span t-esc="inv.get_amount_in_currency(o._get_invoice_payment_amount(inv))" />
+		                            </td>
+		                            <td class="text-right" t-att-style="style_row">
+		                            	<span t-esc="inv.get_amount_in_currency(inv.residual_signed)" />
+		                            </td>
+		                        </tr>
+	                		</tbody>
+	                	</table>
+                	</div>
+                	<div class="col-2"/>
+                </div>
+                
+                <div class="row" t-if="o.payment_type == 'outbound'" style="margin-top:60px;">
+                	<div style='font-size: 14px;text-center;' class='col-4 text-center float-left'>
+						<div STYLE="background-color:#000000; height:1px; width:65%;margin: auto;" class="float-center"/>
+						Received By
+					</div>
+					
+					<div style='font-size: 14px;text-center;' class='col-4 text-center float-center'>
+						<div STYLE="background-color:#000000; height:1px; width:65%;margin: auto;" class="float-center"/>
+						Approved By
+					</div>
+					
+					<div style='font-size: 14px;text-center;' class='col-4 text-center float-right'>
+						<div STYLE="background-color:#000000; height:1px; width:65%;margin: auto;" class="text-center"/>
+						Prepared By: <span t-field="o.create_uid"/>
+					</div>
+                </div>
+				<div class="row" style="margin-top:60px;font-size:14px;" t-if="o.payment_type == 'inbound'">
+					<table class="table table-borderless" style="border-collapse: collapse;width:100%">
+						<tr>
+							<td style="width:70%;"></td>
+							<td>
+								Prepared By: <span t-field="o.create_uid"/>
+							</td>
+						</tr>
+						<tr>
+							<td style="width:70%;"></td>
+							<td>
+								SIGNATURE:
+							</td>
+						</tr>
+					</table>
+				</div>
+                <!--  
+                <div class="row" style="margin-top:4px;">
+               		<p class='nospacing col-12' t-if="o.communication" style="font-size:14px;">
+               			Memo : <span t-field="o.communication"/>
+               		</p>
+                </div>
+                -->
+                <!--  
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th><span>Invoice Date</span></th>
+                            <th><span>Invoice Number</span></th>
+                            <th><span>Reference</span></th>
+                            <th class="text-right"><span>Original Amount</span></th>
+                            <th class="text-right"><span>Amount Paid</span></th>
+                            <th class="text-right"><span>Balance</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.reconciled_invoice_ids" t-as="inv">
+                            <td><span t-field="inv.date_invoice"/></td>
+                            <td><span t-field="inv.number"/></td>
+                            <td><span t-field="inv.reference"/></td>
+                            <td class="text-right"><span t-field="inv.amount_total"/></td>
+                            <td class="text-right"><span t-esc="o._get_invoice_payment_amount(inv)" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
+                            <td class="text-right"><span t-field="inv.residual"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                -->
+            </div>
+        </t>
+    </template>
+
+    <template id="report_payment_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+				<t t-set="show_company_tag" t-value="False"/>
+				<t t-set="show_header" t-value="False"/>
+				<t t-set="show_footer" t-value="False"/>
+                <t t-set="lang" t-value="o.partner_id.lang"/>
+				<t t-call="refacs_custom_reports.report_payment_receipt_document" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+	<template id="report_payment_receipt_with_logo">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+				<t t-set="show_company_tag" t-value="True"/>
+				<t t-set="show_header" t-value="True"/>
+				<t t-set="show_footer" t-value="False"/>
+				<t t-set="lang" t-value="o.partner_id.lang"/>
+                <t t-call="refacs_custom_reports.report_payment_receipt_document" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

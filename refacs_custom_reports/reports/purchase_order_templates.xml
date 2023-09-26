@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_purchaseorder_document">
+    <!--<t t-call="web.basic_layout">-->
+	<t t-call="refacs_custom_reports.external_layout_standard">
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+        <t t-set="doc" t-value="o.with_context(lang=o.partner_id.lang)"/>
+		<t t-if="not company">
+			<!-- Multicompany -->
+			<t t-if="company_id">
+				<t t-set="company" t-value="company_id"/>
+			</t>
+			<t t-elif="o and 'company_id' in o">
+				<t t-set="company" t-value="o.company_id.sudo()"/>
+			</t>
+			<t t-else="else">
+				<t t-set="company" t-value="res_company"/>
+			</t>
+		</t>
+		<div class="footer">
+			<t t-if="doc.amount_total">
+			<div class="row" style="font-weight:bold;">
+				<div class="col-2 text-left">TOTAL</div>
+				<div class="col-8 text-left"><span t-esc="doc.currency_id.amount_to_text(doc.amount_total)"/></div>
+				<div class="col-2 text-right"><span t-field="doc.amount_total"/></div>
+			</div>
+			</t>
+			<t t-if="not doc.amount_total">
+				<br/>
+			</t>
+			<div class="row" style="margin-top:1px;font-size:14px;">
+				<table class="table table-borderless" style="border-collapse: collapse;width:100%">
+					<tr>
+						<td style="width:18%;">APPROVED BY:</td>
+						<td>
+							<span t-field="doc.user_id"/>
+						</td>
+						<td style="width:35%"></td>
+						<td style="width:18%;">PREPARE BY:</td>
+						<td>
+							<span t-field="doc.user_id"/>
+						</td>
+
+					</tr>
+					<tr>
+						<td style="padding-bottom:0px;">SIGNATURE :</td>
+						<td style="padding: 0px;border-top:0px;border-bottom: 1px solid;padding-bottom:0px;">
+
+						</td>
+						<td style="padding-bottom:0px;"></td>
+						<td style="padding-bottom:0px;">SIGNATURE :</td>
+						<td style="padding: 0px;border-top:0px;border-bottom: 1px solid;padding-bottom:0px;">
+
+						</td>
+					</tr>
+				</table>
+			</div>
+			<t t-if="show_footer">
+			<img t-if="company.footer_image" t-att-src="image_data_uri(company.footer_image)" style="height:150px;width:100%;" alt="Footer"/>
+			</t>
+		</div>
+        <style>
+                p.nospacing
+                {
+                    margin: 0;
+                }
+		        .table-bordered th,
+				.table-bordered td {
+				  padding: 0.30rem;
+				  
+				}
+				.table-bordered th
+				 {
+					font-size:14px;
+					border:none;
+				}
+				.table-bordered td
+				{
+					font-size:13px;
+					border:none;
+				}
+				
+				td.sign_footer
+				{
+					padding: 0.25rem;
+					border-top:0px;
+					border:none;
+				}
+				.table-bordered thead th
+				{
+					border:none;
+				}
+	        </style>
+	        
+           <div style="margin-bottom:20px;">
+	    		<h3 style="font-weight: bold;text-align:center;">
+		        	<span t-if="not is_lpo">Purchase Order</span>
+		        	<span t-if="is_lpo">Local Purchase Order</span>
+	         	</h3>
+           </div>
+           
+        	<div class='row'>
+	        	<div class="float-left col-9">
+       				<span style="font-weight:bold;">TO</span>
+	        		<div t-field="doc.partner_id" style="font-size:14px;"
+			             t-options='{"widget": "contact", "fields": ["address", "name", "phone","mobile","email"], "no_marker": True, "phone_icons": True}'/>
+			          <p t-if="doc.partner_id.vat" class="nospacing" style="font-size:13px;">
+				            <t t-esc="doc.company_id.country_id.vat_label or 'VAT : '"/>
+				            <span t-field="doc.partner_id.vat"/>
+			           </p>
+		        </div>
+		        <div class="float-left col-3" style="font-size:14px;font-weight:bold;padding-left:2px;">
+		        	<span>LPO # </span>
+		        	<span t-field='doc.name' style="font-weight:bold;font-size:20px;"/>
+		        	<br/>
+		        	<span>DATE : </span>
+		        	<span t-field='doc.date_order' t-options='{"widget": "date"}'/>
+		        	<br/>
+		        	<span>QUOTATION # </span>
+		        	<span t-field='doc.partner_ref'/>
+		        	
+	        	</div>
+	        </div>
+	        
+        <div class="page">
+            <div class="oe_structure"/>
+            <table class="table table-bordered" style="border:none;margin-top:10px;">
+                <thead>
+                       <tr>
+                            <!-- TODO: remove in master -->
+                            <t t-set="colspan" t-value="5"/>
+                            <th class="text-left" width="15%">STOCK NUMBER</th>
+	                        <th class="text-left">ITEM NAME</th>
+	                        <th class="text-left" width="10%">QTY</th>
+	                        <th class="text-right" width="14%">UNIT&#160;PRICE</th>
+	                        <th class="text-right" width="14%">TOTAL&#160;PRICE</th>
+                        </tr>
+                   </thead>
+                <tbody>
+                    <tr t-foreach="o.order_line" t-as="line">
+                    	<td>
+                            <span t-field="line.product_id.barcode"/>
+                        </td>
+                        <td>
+                            <span t-field="line.name"/>
+                        </td>
+                        <td>
+                            <span t-field="line.product_qty"/>
+                            <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                        </td>
+                        <td class="text-right">
+                            <span t-esc="doc.currency_id.amount_to_str(line.price_unit)"/>
+                        </td>
+                        <td class="text-right">
+                        	<span t-esc="doc.currency_id.amount_to_str(line.price_subtotal)"/>
+                        </td>
+                    </tr>
+                    <!-- subtotals -->
+	                   	<tr style="font-weight:bold;">
+	                   		<td/><td/>
+	                   		<td colspan='2'>
+	                   			TOTAL&#160;PRICE
+	                   		</td>
+	                   		<td class="text-right">
+	                   			<span t-esc="doc.currency_id.amount_to_str(doc.amount_untaxed)"/>
+	                   		</td>
+	                   	</tr>
+						<!--
+	                   	<tr style="font-weight:bold;">
+	                   		<td/><td/>
+	                   		<td colspan='2'>
+	                   			LESS&#160;DISCOUNT
+	                   		</td>
+	                   		<td>
+	                   			<span t-esc="doc.currency_id.amount_to_str(0)"/>
+	                   		</td>
+	                   	</tr>
+	                   	-->
+	                   	<tr style="font-weight:bold;">
+	                   		<td/><td/>
+	                   		<td colspan='2'>
+	                   			GROSS&#160;AMOUNT
+	                   		</td>
+	                   		<td class="text-right">
+	                   			<span t-esc="doc.currency_id.amount_to_str(doc.amount_untaxed)"/>
+	                   		</td>
+	                   	</tr>
+	                   	<t t-foreach="doc._amount_by_group()" t-as="amount_by_group">
+                              <tr style="font-weight:bold;">
+                              	  <td/><td/>
+                                  <t t-if="amount_by_group[3] == 1 and doc.amount_untaxed == amount_by_group[2]">
+                                      <td colspan='2'>
+                                          <span t-esc="amount_by_group[0]"/>
+                                          <span>&amp;nbsp;<span>on</span>&amp;nbsp;
+                                          	<t t-esc="doc.currency_id.amount_to_str(amount_by_group[2])"/>
+                                          	<!--  
+                                          	<t t-esc="amount_by_group[2]" t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                          	-->
+                                          </span>
+                                      </td>
+                                      <td class="text-right">
+                                          <span t-esc="doc.currency_id.amount_to_str(amount_by_group[1])"/>
+                                      </td>
+                                  </t>
+                                  <t t-else ="">
+                                      <td colspan='2'>
+                                      	<strong>
+                                          	<span t-esc="amount_by_group[0]"/>
+                                          </strong>
+                                      </td>
+                                      <td class="o_price_total text-right">
+                                       	<span t-esc="doc.currency_id.amount_to_str(amount_by_group[1])"/>
+                                      </td>
+                                  </t>
+                              </tr>
+                        </t>
+                              <!--<tr style="font-weight:bold;">
+	                              	<td>
+	                              		TOTAL
+	                              	</td>
+	                              	<td colspan='3'>
+	                              		<span t-esc="doc.currency_id.amount_to_text(doc.amount_total)"/>
+	                              	</td>
+	                              	<td class="text-right">
+	                              		<span t-field="doc.amount_total"/>
+	                              	</td>
+                              </tr>-->
+                </tbody>
+            </table>
+			<br/>
+			<!--
+			<div class="row" style="margin-top:70px;font-size:14px;">
+
+				<table class="table table-borderless" style="border-collapse: collapse;width:100%">
+					<tr>
+						<td style="width:18%;">APPROVED BY:</td>
+						<td>
+							<span t-field="doc.user_id"/>
+						</td>
+						<td style="width:35%"></td>
+						<td style="width:18%;">PREPARE BY:</td>
+						<td>
+							<span t-field="doc.user_id"/>
+						</td>
+
+					</tr>
+					<tr>
+						<td style="padding-bottom:0px;">SIGNATURE :</td>
+						<td style="padding: 0px;border-top:0px;border-bottom: 1px solid;padding-bottom:0px;">
+
+						</td>
+						<td style="padding-bottom:0px;"></td>
+						<td style="padding-bottom:0px;">SIGNATURE :</td>
+						<td style="padding: 0px;border-top:0px;border-bottom: 1px solid;padding-bottom:0px;">
+
+						</td>
+					</tr>
+				</table>
+			</div>
+			-->
+			<!--
+            <div id="total" class="row justify-content-end">
+                <div class="col-4">
+                    <table class="table table-sm">
+                        <tr class="border-black">
+                            <td><strong>Subtotal</strong></td>
+                            <td class="text-right">
+                                <span t-field="o.amount_untaxed"
+                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Taxes</td>
+                            <td class="text-right">
+                                <span t-field="o.amount_tax"
+                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr class="border-black o_total">
+                            <td><strong>Total</strong></td>
+                            <td class="text-right">
+                                <span t-field="o.amount_total"
+                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+			-->
+			
+            <p t-field="o.notes"/>
+            <div class="oe_structure"/>
+        </div>
+    </t>
+</template>
+
+<!-- purchase order -->
+<template id="report_purchaseorder_with_logo">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+        	<t t-set="show_company_tag" t-value="True"/>
+			<t t-set="show_header" t-value="True"/>
+			<t t-set="show_footer" t-value="True"/>
+			<t t-call="refacs_custom_reports.report_purchaseorder_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+<template id="report_purchaseorder_without_logo">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+        	<t t-set="show_company_tag" t-value="True"/>
+			<t t-set="show_header" t-value="False"/>
+			<t t-set="show_footer" t-value="False"/>
+            <t t-call="refacs_custom_reports.report_purchaseorder_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+
+<!-- local purchase order -->
+<template id="report_lpo_with_logo">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+        	<t t-set="is_lpo" t-value="True"/>
+        	<t t-set="show_company_tag" t-value="True"/>
+			<t t-set="show_header" t-value="True"/>
+			<t t-set="show_footer" t-value="False"/>
+            <t t-call="refacs_custom_reports.report_purchaseorder_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+<template id="report_lpo_without_logo">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+        	<t t-set="is_lpo" t-value="True"/>
+        	<t t-set="show_company_tag" t-value="False"/>
+			<t t-set="show_header" t-value="False"/>
+			<t t-set="show_footer" t-value="False"/>
+            <t t-call="refacs_custom_reports.report_purchaseorder_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+
+</odoo>

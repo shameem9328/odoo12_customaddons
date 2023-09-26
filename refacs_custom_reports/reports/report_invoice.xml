@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoice_document">
+          <t t-call="refacs_custom_reports.external_layout_standard">
+          
+	    	<t t-set="doc" t-value="o.with_context({'lang': lang})"/>
+	    	<t t-set="o" t-value="o.with_context({'lang': lang})"/>
+	    	<t t-if="not o" t-set="o" t-value="doc"/>
+	
+	        <t t-if="not company">
+	            <!-- Multicompany -->
+	            <t t-if="company_id">
+	                <t t-set="company" t-value="company_id"/>
+	            </t>
+	            <t t-elif="o and 'company_id' in o">
+	                <t t-set="company" t-value="o.company_id.sudo()"/>
+	            </t>
+	            <t t-else="else">
+	                <t t-set="company" t-value="res_company"/>
+	            </t>
+	        </t>
+	        
+	        <!--  
+	        <div class="header">
+	            <div class="row">
+	                <div class="col-3 mb4">
+	                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="height: 100px;width: 100px;" alt="Logo"/>
+	                </div>
+	                <div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>
+	            </div>
+	            <div t-if="company.logo or company.report_header" class="row zero_min_height">
+	                <div class="col-12">
+	                    <div style="border-bottom: 1px solid black;"/>
+	                </div>
+	            </div>
+	            <div class="row">
+	                <div class="col-6" name="company_address">
+	                    <div t-field="company.partner_id"
+	                        t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+	                    />
+	                </div>
+	            </div>
+	        </div>
+	   	-->
+	        <div class="footer">
+				<t t-if="doc.amount_total">
+				<div class="row" style="font-weight:bold;">
+					<div class="col-2 text-left">TOTAL</div>
+					<div class="col-8 text-left"><span t-esc="doc.currency_id.amount_to_text(doc.amount_total)"/></div>
+					<div class="col-2 text-right"><span t-field="doc.amount_total"/></div>
+				</div>
+				</t>
+				<t t-if="not doc.amount_total">
+					<br/>
+				</t>
+				<div class='row' style="margin-top:1px;font-size:14px;">
+	            	<div class="col-7"/>
+	            	<div class="col-5">
+	            		<table class="table table-bordered" style="border:none;">
+		            		<tr style="border:none;font-size:14px;">
+		            			<td class="text-left" style="border:none;" width="25%">
+		            				PREPARED&#160;BY
+		            			</td>
+		            			<td width="1%" style="border:none;"> : </td>
+		            			<td class="text-left" style="border:none;">
+		            				<span t-field="doc.user_id" t-if="doc.user_id"/>
+		            				<span t-field="doc.create_uid" t-if="not doc.user_id"/>
+		            			</td>
+		            		</tr>
+		            		<tr style="border:none;font-size:14px;">
+		            			<td class="text-left" style="border:none;">
+		            				SIGNATURE
+		            				<br/><br/>
+		            			</td>
+		            			<td style="border:none;"> : </td>
+		            			<td style="border:none;"></td>
+		            		</tr>
+	            		</table>
+	            	</div>
+	            </div>
+				<t t-if="show_footer">
+				<img t-if="company.footer_image" t-att-src="image_data_uri(company.footer_image)" style="height:150px;width:100%;" alt="Footer"/>
+				</t>
+			</div>
+	    	<style>
+                p.nospacing
+                {
+                    margin: 0;
+                }
+		        .table-bordered th,
+				.table-bordered td {
+				  padding: 0.30rem;
+				  
+				}
+				.table-bordered th
+				 {
+					font-size:14px;
+					border:none;
+				}
+				.table-bordered td
+				{
+					font-size:13px;
+					border:none;
+				}
+				
+				td.sign_footer
+				{
+					padding: 0.25rem;
+					border-top:0px;
+					border:none;
+				}
+				.table-bordered thead th
+				{
+					border:none;
+				}
+	        </style>
+	        
+           <div style="margin-bottom:20px;">
+	    		<h3 style="font-weight: bold;text-align:center;">
+		            <span t-if="o.type == 'out_invoice' and o.state in ('open', 'in_payment', 'paid')">Tax Invoice</span>
+		            <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Draft Tax Invoice</span>
+		            <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Cancelled Tax Invoice</span>
+		            <span t-if="o.type == 'out_refund'">Credit Note</span>
+		            <span t-if="o.type == 'in_refund'">Vendor Credit Note</span>
+		            <span t-if="o.type == 'in_invoice'">Vendor Bill</span>
+	         	</h3>
+	            
+           </div>
+           
+        	<div class='row'>
+	        	<div class="float-left col-9">
+       				<span style="font-weight:bold;">TO</span>
+	        		<div t-field="doc.partner_id" style="font-size:14px;"
+			             t-options='{"widget": "contact", "fields": ["address", "name", "phone","mobile","email"], "no_marker": True, "phone_icons": True}'/>
+			          <p t-if="doc.partner_id.vat" class="nospacing" style="font-size:13px;">
+				            <t t-esc="doc.company_id.country_id.vat_label or 'VAT : '"/>
+				            <span t-field="doc.partner_id.vat"/>
+			           </p>
+		        </div>
+		        <div class="float-left col-3" style="font-size:14px;font-weight:bold;padding-left:2px;">
+		        	<span>INV # </span>
+		        	<span t-if="doc.number" t-field='doc.number' style="font-weight:bold;font-size:20px;"/>
+		        	<br/>
+		        	<span>DATE : </span>
+		        	<span t-field='doc.date_invoice'/>
+		        	<t t-set="delivery_no" t-value="doc.get_extra_values('delivery')"/>
+		        	<br t-if="delivery_no"/>
+		        	<span t-if="delivery_no">DO # </span>
+		        	<span t-esc="delivery_no" t-if="delivery_no"/>
+		        	<br/>
+		        	<span>LPO # </span>
+		        	<span t-field='doc.name'/>
+		        	<br/>
+		        	<span>DUE DATE : </span>
+		        	<span t-field='doc.date_due'/>
+	        	</div>
+	        </div>
+		
+               		
+                <div class="page">
+                	
+                    <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+
+                    <table class="table table-bordered" style="border:none;margin-top:10px;" name="invoice_line_table">
+                        <thead>
+                            <tr>
+                                <!-- TODO: remove in master -->
+                                <t t-set="colspan" t-value="5"/>
+                               	<th class="text-left" width="15%">STOCK NUMBER</th>
+		                        <th class="text-left">ITEM NAME</th>
+		                        <th class="text-left" width="10%">QTY</th>
+		                        <th class="text-right" width="14%">UNIT&#160;PRICE</th>
+		                        <th class="text-right" width="14%">TOTAL&#160;PRICE</th>
+                            </tr>
+                        </thead>
+                        <tbody class="invoice_tbody">
+                            <t t-set="current_subtotal" t-value="0"/>
+							<t t-set="sl_no" t-value="0"/>
+                            <t t-foreach="o.invoice_line_ids" t-as="line">
+								
+                                <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type" name="account_invoice_line_accountable">
+                                    	<t t-set="sl_no" t-value="sl_no + 1"/>
+                                        <td>
+	                            			<span t-if="line.product_id" t-field="line.product_id.barcode"/>
+		                            	</td>
+		                                <td>
+		                                	<span t-field="line.name"/>
+		                                </td>
+		                                <!-- Modfd e-->
+		                                <td>
+		                                    <span t-esc="line.quantity"/>
+		                                    <span t-field="line.uom_id" groups="uom.group_uom"/>
+		                                </td>
+		                                <td class="text-right">
+		                                    <span t-esc="doc.currency_id.amount_to_str(line.price_unit)"/>
+		                                </td>
+		                                <td class="text-right">
+		                                	<span t-esc="doc.currency_id.amount_to_str(line.get_price_subtotal())"/>
+		                                </td>
+	                                </t>
+                                    <t t-if="line.display_type == 'line_section'">
+                                        <td colspan="99">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <t t-set="current_section" t-value="line"/>
+                                        <t t-set="current_subtotal" t-value="0"/>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_note'">
+                                        <td colspan="99">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                    </t>
+                                </tr>
+				
+                                <t t-if="current_section and (line_last or o.invoice_line_ids[line_index+1].display_type == 'line_section') and show_price">
+                                    <tr class="is-subtotal text-right">
+                                        <td colspan="99">
+                                            <strong class="mr16">Subtotal</strong>
+                                            <span t-esc="doc.currency_id.amount_to_str(current_subtotal)"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                            
+                            	<!-- subtotals -->
+                         <!-- subtotals -->
+	                   	<t t-set="amount_untaxed" t-value="doc.get_amount_untaxed()"/>
+	                   	<tr style="font-weight:bold;">
+	                   		<td/><td/>
+	                   		<td colspan='2'>
+	                   			TOTAL&#160;PRICE
+	                   		</td>
+	                   		<td class="text-right">
+	                   			<span t-esc="doc.currency_id.amount_to_str(amount_untaxed)"/>
+	                   		</td>
+	                   	</tr>
+	                   	<t t-set="amount_discount" t-value="doc.get_amount_discount()"/>
+	                   	<tr style="font-weight:bold;">
+	                   		<td/><td/>
+	                   		<td colspan='2'>
+	                   			LESS&#160;DISCOUNT
+	                   		</td>
+	                   		<td class="text-right">
+	                   			<span t-esc="doc.currency_id.amount_to_str(amount_discount)"/>
+	                   		</td>
+	                   	</tr>
+	                   		<tr style="font-weight:bold;">
+	                   		<td/><td/>
+	                   		<td colspan='2'>
+	                   			GROSS&#160;AMOUNT
+	                   		</td>
+	                   		<td class="text-right">
+	                   			<span t-esc="doc.currency_id.amount_to_str(amount_untaxed - amount_discount)"/>
+	                   		</td>
+	                   	</tr>
+                        <t t-foreach="o.amount_by_group" t-as="amount_by_group">
+                            <tr style="font-weight:bold;">
+                            	<td/><td/>
+                                <t t-if="len(o.tax_line_ids) == 1 and o.amount_untaxed == amount_by_group[2]">
+                                    <td colspan='2'>
+                                    	<strong>
+                                    		<span t-esc="amount_by_group[0]"/>
+                                    	</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="doc.currency_id.amount_to_str(amount_by_group[1])"/>
+                                    </td>
+                                </t>
+                                <t t-else="">
+                                    <td colspan='2'>
+                                    	<strong>
+                                        	<span t-esc="amount_by_group[0]"/>
+                                        </strong>
+                                        <span>&amp;nbsp;<span>on</span>
+                                            <t t-esc="amount_by_group[4]"/>
+                                        </span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="doc.currency_id.amount_to_str(amount_by_group[1])"/>
+                                    </td>
+                                </t>
+                            </tr>
+                          </t>
+                          <span id="payment_total"/>
+							<!--
+                            <tr style="font-weight:bold;">
+                              	<td>
+                              		TOTAL
+                              	</td>
+                              	<td colspan='3'>
+                              		<span t-esc="doc.currency_id.amount_to_text(doc.amount_total)"/>
+                              	</td>
+                              	<td class="text-right">
+                              		<span t-field="doc.amount_total"/>
+                              	</td>
+                              </tr> 
+                       		-->
+                     </tbody>
+                       
+                   </table>
+					
+                    <p t-if="o.comment" name="comment">
+                        <span t-field="o.comment"/>
+                    </p>
+                <!--<div class='row' style="margin-top:70px;font-size:14px;">
+	            	<div class="col-4"/>
+	            	<div class="col-4"/>
+	            	<div class="col-4">
+	            		<table class="table table-bordered" style="border:none;">
+		            		<tr style="border:none;font-size:14px;">
+		            			<td class="text-left" style="border:none;" width="25%">
+		            				PREPARED&#160;BY
+		            			</td>
+		            			<td width="1%"> : </td>
+		            			<td class="text-left" style="border:none;">
+		            				<span t-field="doc.user_id" t-if="doc.user_id"/>
+		            				<span t-field="doc.create_uid" t-if="not doc.user_id"/>
+		            			</td>
+		            		</tr>
+		            		<tr style="border:none;font-size:14px;">
+		            			<td class="text-left" style="border:none;">
+		            				SIGNATURE 
+		            				<br/><br/>
+		            			</td>
+		            			<td> : </td>
+		            			<td style="border:none;"></td>
+		            		</tr>
+	            		</table>
+	            	</div>
+	            </div>-->
+                </div>
+            </t>
+        </template>
+
+        <template id="report_invoice_document_with_payments" inherit_id="refacs_custom_reports.report_invoice_document" primary="True">
+            <xpath expr="//span[@id='payment_total']" position="after">
+                <t t-set="payments_vals" t-value="o._get_payments_vals()"/>
+                <t t-foreach="payments_vals" t-as="payment_vals">
+                    <tr>
+                    	<td/><td/>
+                        <td colspan='2'>
+                            <i class="oe_form_field text-right oe_payment_label">Paid on <t t-esc="payment_vals['date']"/></i>
+                        </td>
+                        <td class="text-right">
+                            <span t-esc="payment_vals['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                        </td>
+                    </tr>
+                </t>
+                <t t-if="len(payments_vals) > 0">
+                    <tr style="font-weight:bold;">
+                    	<td/><td/>
+                        <td colspan='2'><strong>Amount Due</strong></td>
+                        <td class="text-right">
+                             <span t-field="o.residual"/>
+                        </td>
+                    </tr>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="report_invoice_with_logo">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                	<t t-set="show_company_tag" t-value="True"/>
+                	<t t-set="show_header" t-value="True"/>
+		        	<t t-set="show_footer" t-value="True"/>
+		        	<t t-set="lang" t-value="o.user_id.lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="refacs_custom_reports.report_invoice_document" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+        
+        <template id="report_invoice_with_payments_with_logo">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                	<t t-set="show_company_tag" t-value="True"/>
+                	<t t-set="show_header" t-value="True"/>
+		        	<t t-set="show_footer" t-value="True"/>
+		        	<t t-set="lang" t-value="o.user_id.lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="refacs_custom_reports.report_invoice_document_with_payments" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+        
+        <template id="report_invoice_without_logo">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+					<t t-set="show_company_tag" t-value="False"/>
+                	<t t-set="show_header" t-value="False"/>
+		        	<t t-set="show_footer" t-value="False"/>
+                    <t t-set="lang" t-value="o.user_id.lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="refacs_custom_reports.report_invoice_document" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+		<template id="report_invoice_with_payments_without_logo">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+					<t t-set="show_company_tag" t-value="False"/>
+                	<t t-set="show_header" t-value="False"/>
+		        	<t t-set="show_footer" t-value="False"/>
+                    <t t-set="lang" t-value="o.user_id.lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="refacs_custom_reports.report_invoice_document_with_payments" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+        <!--  note:skipped sale,sale_stock inherited  -->
+        
+        
+    </data>
+</odoo>
