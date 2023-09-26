@@ -1,0 +1,30 @@
+<odoo>
+    <record model="ir.ui.view" id="view_helpdesk_form_custom">
+        <field name="name">custom_helpdesk_whatsapp_module</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='assign_ticket_to_self']" position="after">
+                <field name="is_visible_whatsapp" invisible="1"/>
+                <field name="is_stage_whatsapp_visible" invisible="1"/>
+                <button name="action_whatsapp_ticket" type="object" string="Send by whatsapp" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': ['|',('is_visible_whatsapp', '=',False),('is_stage_whatsapp_visible', '=',False)]}" groups="helpdesk.group_helpdesk_user"/>
+                <button name="action_whatsapp_ticket_contacts" type="object" string="Send to contacts" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': ['|',('is_visible_whatsapp', '=',False),('is_stage_whatsapp_visible', '=',False)]}" groups="helpdesk.group_helpdesk_user"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="helpdesk_stage_view_form_custom">
+        <field name="name">helpdesk_stage_view_form_whatsapp_module</field>
+        <field name="model">helpdesk.stage</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_stage_view_form"></field>
+        <field name="arch" type="xml">
+            <field name="template_id" position="after">
+                <field name="whatsapp_template_id"/>
+                <field name="help_desk_whts_send_type" string="Whatsapp send by"/>
+            </field>
+        </field>
+    </record>
+
+
+
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="customer_statements_form_view_custom" model="ir.ui.view">
+            <field name="name">customer.statements.followup</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account_reports.customer_statements_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet" position="before">
+                     <header>
+                         <field name="is_visible_whatsapp" invisible="1"/>
+                         <button name="action_followup_whatsapp_sent" type="object"  string="Send by whatsapp" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': [('is_visible_whatsapp', '=',False)]}"/>
+                         <button name="action_followup_contact_whatsapp_sent" type="object"  string="Send to contacts" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': [('is_visible_whatsapp', '=',False)]}"/>
+                     </header>
+                </xpath>
+            </field>
+        </record>
+        
+
+
+        <!-- Action Customer followup statement whatsapp for multi -->
+        <record id="action_partner_followup_whatsapp" model="ir.actions.server">
+            <field name="name">Customer followup statement send by whatsapp</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="code">records.action_followup_whatsapp_sent()</field>
+        </record>
+
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,26 @@
+<odoo>
+    <record model="ir.ui.view" id="whatsapp_sale_order_custom">
+        <field name="name">custom_whatsapp_module</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header/button[@name='action_quotation_send']" position="after">
+                <field name="is_visible_whatsapp" invisible="1"/>
+                <field name="is_visible_order_whatsapp" invisible="1"/>
+                <button name="quotation_whatsapp" type="object"  string="Whatsapp" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': ['|',('is_visible_whatsapp', '=',False),('state','not in',['draft','sent'])]}"/>
+                <button name="quotation_whatsapp" type="object"  string="Whatsapp" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': ['|',('is_visible_order_whatsapp', '=',False),('state','not in',['sale','done'])]}"/>
+                <button name="quotation_whatsapp_contacts" type="object"  string="Send to contacts" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': ['|',('is_visible_whatsapp', '=',False),('state','not in',['draft','sent'])]}"/>
+                <button name="quotation_whatsapp_contacts" type="object"  string="Send to contacts" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF"  attrs="{'invisible': ['|',('is_visible_order_whatsapp', '=',False),('state','not in',['sale','done'])]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+</odoo>

@@ -1,0 +1,37 @@
+<odoo>
+    <record model="ir.ui.view" id="whatsapp_paymnet_custom">
+        <field name="name">custom_invoice_whatsapp_module</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header/button[@name='post']" position="after">
+                <field name="is_visible_whatsapp" invisible="1"/>
+                <button name="action_payment_whatsapp_sent" type="object"  string="Send receipt by whatsapp" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': [('is_visible_whatsapp', '=',False)]}"/>
+                <button name="action_payment_whatsapp_contact_sent" type="object"  string="Send receipt to contacts" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': [('is_visible_whatsapp', '=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+<!--    <record model="ir.ui.view" id="whatsapp_invoice_bill_custom">-->
+<!--        <field name="name">custom_invoice_whatsapp_module</field>-->
+<!--        <field name="model">account.invoice</field>-->
+<!--        <field name="inherit_id" ref="account.invoice_supplier_form"></field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//form/header/button[@name='action_invoice_open']" position="after">-->
+<!--                <field name="is_visible_whatsapp" invisible="1"/>-->
+<!--                <button name="action_invoice_whatsapp_sent" type="object"  string="Whatsapp" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': ['|',('is_visible_whatsapp', '=',False),('state','not in',['open'])]}"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+
+
+
+
+
+
+
+
+</odoo>

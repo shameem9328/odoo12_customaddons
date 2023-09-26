@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><data>
+
+    <record id="new_ticket_request_whatsapp_template" model="mail.template">
+        <field name="name">Whatsapp-Ticket: Reception Acknowledgment</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="lang">${object.partner_id.lang or object.user_id.lang or user.lang | safe}</field>
+        <field name="body_html" type="html">
+        <div>
+            Dear ${object.sudo().partner_id.name or 'Madam/Sir'},<br /><br />
+    Your request ${object.name}
+
+    has been received and is being reviewed by our ${object.team_id.name or ''} team.
+    The reference of your ticket is ${object.id}.<br/><br />
+    Thanks you,<br/><br/>
+    ${object.team_id.name or 'Helpdesk'} Team.
+        </div>
+        </field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+    <record id="solved_ticket_request_whatsapp_template" model="mail.template">
+        <field name="name">Whatsapp-Ticket: Solved</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="lang">${object.partner_id.lang or object.user_id.lang or user.lang | safe}</field>
+        <field name="body_html" type="xml">
+<div>
+    Dear ${object.sudo().partner_id.name or 'Madam/Sir'},<br /><br />
+    This automatic message informs you that we have closed your ticket (reference ${object.id}).
+    We hope that the services provided have met your expectations.<br /><br />
+    Thank you for your cooperation.<br/>
+    Kind regards,<br/><br/>
+    ${object.team_id.name or 'Helpdesk'} Team.
+</div>
+        </field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+
+
+</data>
+</odoo>

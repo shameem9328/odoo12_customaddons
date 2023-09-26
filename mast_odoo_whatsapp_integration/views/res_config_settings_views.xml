@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_whatsapp" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.dhaif</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Whatsapp Integartion" string="Whatsapp Integration" data-key="mast_odoo_whatsapp_integration">
+                        <center>
+                            <h2   style="height:50px;padding-top:15px;">MAST Odoo-Whatsapp Integration</h2>
+                        </center>
+                    <h2>Authentication</h2>
+                    <div class="row mt16 o_settings_container">
+                    	<div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Authentication Token</span>
+                                <div class="text-muted">
+                                   Set authentication token here
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Token" for="whatsa_auth_token" class="col-lg-3 o_light_label"/>
+                                            <field name="whatsa_auth_token"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    	<div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Instance Id</span>
+                                <div class="text-muted">
+                                    Set whatsapp instance id
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Instance Id" for="instance_id" class="col-lg-3 o_light_label"/>
+                                            <field name="instance_id"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Sales Quotations</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Available</span>
+                                <div class="text-muted">
+                                   Set whatsapp available  here
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Available" for="qt_whts_available" class="col-lg-3 o_light_label"/>
+                                            <field name="qt_whts_available"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible': [('qt_whts_available', '=', False)]}">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Follow up</span>
+                                <div class="text-muted">
+                                    Set whatsapp followup message
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Follow Up" for="qt_whts_flwup" class="col-lg-3 o_light_label"/>
+                                            <field name="qt_whts_flwup"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container"  attrs="{'invisible': [('qt_whts_available', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Send By</span>
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Send By" for="qt_whts_send_type" class="col-lg-3 o_light_label"/>
+                                            <field name="qt_whts_send_type"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible': [('qt_whts_available', '=', False)]}">
+                            <div class="o_setting_right_pane" attrs="{'invisible': [('qt_whts_flwup', '=', False)]}">
+                                <span class="o_form_label">Execute Every</span>
+                                <div class="text-muted">
+                                    Set whatsapp message execution
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                            <label string="Every" for="qt_whts_every" class="col-lg-3 o_light_label"/>
+                                            <field name="qt_whts_every" class="oe_inline"/>
+                                            <field name="qt_whts_interval_type" class="oe_inline ml8" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('qt_whts_available', '=', False)]}">
+                           <div class="col-12 col-lg-6 o_setting_box">
+                                <h6>Messages</h6>
+                           </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('qt_whts_available', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+<!--                                <span class="o_form_label">Message</span>-->
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label for="qt_whts_msg" class="col-lg-3 o_light_label"/>
+                                        <field name="qt_whts_msg"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <label for="qt_message_template_message" class="col-lg-6 o_light_label" string="Quotation Message Template"/>
+                            <field name="qt_message_template_message"/>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box"  attrs="{'invisible':[('qt_whts_flwup','=',False)]}">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Follow up" for="qt_flwp_msg" class="col-lg-3 o_light_label"/>
+                                        <field name="qt_flwp_msg"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Sales Orders</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Available</span>
+                                <div class="text-muted">
+                                   Set whatsapp available  here
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Available" for="order_whts_available" class="col-lg-3 o_light_label"/>
+                                            <field name="order_whts_available"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible': [('order_whts_available', '=', False)]}">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Follow up</span>
+                                <div class="text-muted">
+                                    Set whatsapp followup message
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Follow Up" for="order_whts_flwup" class="col-lg-3 o_light_label"/>
+                                            <field name="order_whts_flwup"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('order_whts_available', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Send By</span>
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Send By" for="order_whts_send_type" class="col-lg-3 o_light_label"/>
+                                            <field name="order_whts_send_type"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane" attrs="{'invisible': [('order_whts_flwup', '=', False)]}">
+                                <span class="o_form_label">Execute Every</span>
+                                <div class="text-muted">
+                                    Set whatsapp message execution
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                            <label string="Every" for="order_whts_every" class="col-lg-3 o_light_label"/>
+                                            <field name="order_whts_every" class="oe_inline o_light_label"/>
+                                            <field name="order_whts_interval_type" class="oe_inline ml8"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('order_whts_available', '=', False)]}">
+                           <div class="col-12 col-lg-6 o_setting_box"  attrs="{'invisible': [('order_whts_available', '=', False)]}">
+                                <h6>Messages</h6>
+                           </div>
+                    </div>
+                    <div class="row mt16 o_settings_container"  attrs="{'invisible': [('order_whts_available', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Message" for="order_whts_msg" class="col-lg-3 o_light_label"/>
+                                        <field name="order_whts_msg"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <label string="Order Message Template" for="order_message_template_message" class="col-lg-6 o_light_label"/>
+                            <field name="order_message_template_message"/>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible':[('order_whts_flwup','=',False)]}">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+<!--                                <span class="o_form_label">Follow up Message</span>-->
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Follow up" for="order_flwp_msg" class="col-lg-3 o_light_label"/>
+                                        <field name="order_flwp_msg"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h2>Customer Invoices</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Available</span>
+                                <div class="text-muted">
+                                   Set whatsapp available  here
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Available" for="inv_whts_available" class="col-lg-3 o_light_label"/>
+                                            <field name="inv_whts_available"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('inv_whts_available', '=', False)]}">
+                           <div class="col-12 col-lg-6 o_setting_box">
+                                <h6>Message</h6>
+                           </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('inv_whts_available', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Send By</span>
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Send By" for="inv_whts_send_type" class="col-lg-3 o_light_label"/>
+                                        <field name="inv_whts_send_type"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <label string="Invoice Message Template" for="invoice_message_template_message" class="col-lg-6 o_light_label"/>
+                            <field name="invoice_message_template_message"/>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('inv_whts_available', '=', False)]}">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+<!--                                <span class="o_form_label">Message</span>-->
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Message" for="inv_whts_msg" class="col-lg-3 o_light_label"/>
+                                        <field name="inv_whts_msg"/>
+                                    </div>
+                                    <div class="row mt16">
+                                        <label string="Document Template" for="inv_template_id" class="col-lg-3 o_light_label"/>
+                                        <field name="inv_template_id"   options="{'no_create': True, 'no_create_edit':True,'no_open': True,}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Payments</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Available</span>
+                                <div class="text-muted">
+                                   Set whatsapp available  here
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Available" for="payments_whts_available" class="col-lg-3 o_light_label"/>
+                                            <field name="payments_whts_available"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('payments_whts_available', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Send By</span>
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Send By" for="payments_whts_send_type" class="col-lg-3 o_light_label"/>
+                                        <field name="payments_whts_send_type"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <label string="Payment Message Template" for="payment_message_template_message" class="col-lg-6 o_light_label"/>
+                            <field name="payment_message_template_message"/>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+                             <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Message &amp;Document Format</span>
+                                <div class="text-muted">
+                                        Choose print format for send by whatsapp
+                                </div>
+                                <div class="content-group">
+                                     <div class="row mt16">
+                                        <label string="Message" for="payment_whts_msg" class="col-lg-3 o_light_label"/>
+                                        <field name="payment_whts_msg"/>
+                                    </div>
+
+                                    <div class="row mt16">
+                                        <label string="Format" for="payment_template_id" class="col-lg-3 o_light_label"/>
+                                        <field name="payment_template_id"  options="{'no_create': True, 'no_create_edit':True,'no_open': True,}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Delivery Note</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Available</span>
+                                <div class="text-muted">
+                                   Set whatsapp available  here
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Available" for="do_whts_available" class="col-lg-3 o_light_label"/>
+                                            <field name="do_whts_available"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('do_whts_available', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Send By</span>
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Send By" for="do_whts_send_type" class="col-lg-3 o_light_label"/>
+                                        <field name="do_whts_send_type"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <label string="DO Message Template" for="delivery_message_template_message" class="col-lg-6 o_light_label"/>
+                            <field name="delivery_message_template_message"/>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Message &amp;Document Format</span>
+                                <div class="text-muted">
+                                    Choose print format for send by whatsapp
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                            <label string="Message" for="do_whts_msg" class="col-lg-3 o_light_label"/>
+                                            <field name="do_whts_msg"/>
+                                        </div>
+                                    <div class="row mt16">
+                                        <label string="Format" for="do_template_id" class="col-lg-3 o_light_label"/>
+                                        <field name="do_template_id"  options="{'no_create': True, 'no_create_edit':True,'no_open': True,}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Calendar &amp;Appointments</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Available</span>
+                                <div class="text-muted">
+                                   Set whatsapp available for Appointments here
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Available" for="appointment_whts_available" class="col-lg-3 o_light_label"/>
+                                            <field name="appointment_whts_available"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('appointment_whts_available', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Send By</span>
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Send By" for="appointment_whts_send_type" class="col-lg-3 o_light_label"/>
+                                        <field name="appointment_whts_send_type"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <label string="Appointment Message Template" for="appointment_message_template_message" class="col-lg-6 o_light_label"/>
+                            <field name="appointment_message_template_message"/>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('appointment_whts_available', '=', False)]}">
+                         <div class="col-12 col-lg-12 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                             <div class="o_setting_right_pane">
+                            <div class="col-12 col-lg-12">
+                                <label string="Appointment Remainder Message Template" for="appointment_remainder_template_message" class="col-lg-6 o_light_label"/>
+                                <field name="appointment_remainder_template_message"/>
+                            </div>
+                        </div>
+                         </div>
+                    </div>
+
+                    <h2>Customer Followup</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Available</span>
+                                <div class="text-muted">
+                                   Set whatsapp available for customer followup here
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Available" for="customer_flwup_whts_available" class="col-lg-3 o_light_label"/>
+                                            <field name="customer_flwup_whts_available"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('customer_flwup_whts_available', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Send By</span>
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Send By" for="customer_flwup_whts_send_type" class="col-lg-3 o_light_label"/>
+                                        <field name="customer_flwup_whts_send_type"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('customer_flwup_whts_send_type', '=', 'manual')]}">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Remainder</span>
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Every" for="remainder_days" class="col-lg-3 o_light_label"/>
+                                        <field name="remainder_days" class="oe_inline"/>
+                                        <field name="statement_whts_interval_type" class="oe_inline ml8"/>
+                                        <field name="statment_whts_flwup" invisible="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('customer_flwup_whts_available', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label"></span>
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Message" for="statement_whts_msg" class="col-lg-3 o_light_label"/>
+                                            <field name="statement_whts_msg"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-12 col-lg-6">
+                            <label string="Customer Statement Message Template" for="statement_whts_overdue_msg" class="col-lg-6 o_light_label"/>
+                            <field name="statement_whts_overdue_msg"/>
+                        </div>
+                    </div>
+
+                    <h2>Help Desk</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Whatsapp Available</span>
+                                <div class="text-muted">
+                                   Set whatsapp available for helpdesk here
+                                </div>
+                                <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Available" for="help_desk_whts_available" class="col-lg-3 o_light_label"/>
+                                            <field name="help_desk_whts_available"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('help_desk_whts_available', '=', False)]}">
+<!--                        <div class="col-12 col-lg-6 o_setting_box">-->
+<!--                            <div class="o_setting_left_pane"/>-->
+<!--                            <div class="o_setting_right_pane" invisible="1">-->
+<!--                                <span class="o_form_label">Whatsapp Send By</span>-->
+<!--                                <div class="text-muted">-->
+<!--                                </div>-->
+<!--                                <div class="content-group">-->
+<!--                                    <div class="row mt16" invisible="1">-->
+<!--                                        <label string="Send By" for="help_desk_whts_send_type" class="col-lg-3 o_light_label"/>-->
+<!--                                        <field name="help_desk_whts_send_type"/>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Helpdesk Stages</span>
+                                <div class="text-muted">
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="Helpdesk Teams" for="helpdesk_team_ids" class="col-lg-3 o_light_label"/>
+                                        <field name="helpdesk_team_ids" widget="many2many_tags"  options="{'no_create': True, 'no_create_edit':True,'no_open': True,}"/>
+                                        <label string="Stages" for="helpdesk_stage_ids" class="col-lg-3 o_light_label"/>
+                                        <field name="helpdesk_stage_ids" widget="many2many_tags" domain="[('team_ids','in',helpdesk_team_ids)]"  options="{'no_create': True, 'no_create_edit':True,'no_open': True,}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

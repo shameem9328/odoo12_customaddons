@@ -1,0 +1,25 @@
+<odoo>
+    <record model="ir.ui.view" id="view_calendar_event_form_custom">
+        <field name="name">custom_calendar_whatsapp_module</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="appointment_custom.view_calendar_event_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_cancel']" position="after">
+                <field name="is_visible_whatsapp" invisible="1"/>
+                <button name="action_whatsapp" type="object" string="Send appointments by whatsapp" icon="fa-whatsapp" style="background-color:#25D366;color:#FFFFFF" attrs="{'invisible': [('is_visible_whatsapp', '=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="action_attendees_whatsapp" model="ir.actions.server">
+        <field name="name">Send Whatsapp to attendees</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="calendar.model_calendar_event"/>
+        <field name="binding_model_id" ref="calendar.model_calendar_event"/>
+        <field name="code">records.action_whatsapp()</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="whatsapp_message_template">
+        <span>Whatsapp</span>
+        <div style="width:80%;background-color:#ffffff;padding:10px;margin:10px 10%;">
+              <ul>
+                    <t t-if="header">
+                        <t t-esc="header"/>
+                    </t>
+
+                  <t t-if="reason">
+                      <br/>
+                        <t t-esc="reason"/>
+                    </t>
+                      <t t-if="message">
+                            <br/>
+                          <t t-esc="message"/>
+                      </t>
+
+              </ul>
+            </div>
+
+        <t t-if="error">
+            <p>Error in whatsapp</p>
+            <div style="width:80%;background-color:#ffffff;padding:15px;margin:16px 10%;">
+              <ul>
+                   <li><t t-esc="error" /></li>
+              </ul>
+            </div>
+        </t>
+
+    </template>
+
+
+    <template id="delivery_message_id">
+        Hello *${object.partner_id.name}*,
+Here is your order is shipped *${object.name}* from ${object.company_id.name}.
+Do not hesitate to contact us if you have any question.
+    </template>
+</odoo>
