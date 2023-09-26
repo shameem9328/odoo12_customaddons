@@ -1,0 +1,77 @@
+<odoo>
+    <!-- Add discount in Dhaif policy order report-->
+    <template id="ks_global_discount_policy_report" inherit_id="invoice_report_modify_ext.report_insuranceorder_document">
+        <xpath expr="//div[@name='total']/div/table/tr" position="after">
+            <t t-if="doc.ks_amount_discount>0">
+                <tr>
+                    <td>
+                        <span><strong>Discount </strong></span>
+                        <!-- 
+                        <t t-if="doc.ks_global_discount_type == 'percent'">
+                            (<span t-field="doc.ks_global_discount_rate"/>%)
+                        </t>
+                         -->
+                    </td>
+                    <td> : </td>
+                    <td class="text-left">
+                        <span t-field="doc.ks_amount_discount"
+                              t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                    </td>
+                </tr>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Add discount in default Invoice report-->
+    <template id="ks_global_discount_invoice_report" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='total']/div/table/t" position="after">
+            <t t-if="o.ks_amount_discount>0">
+
+                <tr>
+                    <td>
+                        <span>Discount </span>
+                        <!-- 
+                        <t t-if="o.ks_global_discount_type == 'percent'">
+                            (<span t-field="o.ks_global_discount_rate"/>%)
+                        </t>
+                         -->
+                    </td>
+                    <td class="text-right">
+                        <span t-field="o.ks_amount_discount"
+                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                    </td>
+                </tr>
+            </t>
+        </xpath>
+    </template>
+    <!-- Add discount in Dhaif Invoice report-->
+    <template id="ks_global_discount_dhaif_invoice_report" inherit_id="invoice_report_modify_ext.report_invoice_document_dhaif">
+        <xpath expr="//div[@id='total']/div/table/t" position="after">
+            <t t-if="o.ks_amount_discount>0">
+                <tr>
+                    <td>
+                        <span>Discount </span>
+                    </td>
+                    <td class="text-left">
+                        <span t-field="o.ks_amount_discount"
+                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                    </td>
+                </tr>
+            </t>
+        </xpath>
+        <xpath expr="//div[@id='customer_total']/div/table/tr[1]" position="after">
+            <t t-if="o.ks_amount_discount>0">
+                <tr>
+                    <td>Discount </td>
+                    <td> : </td>
+                    <td>
+                        <span class="text-left" t-field="o.ks_amount_discount"
+                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                    </td>
+                </tr>
+            </t>
+        </xpath>
+    </template>
+
+
+</odoo>
