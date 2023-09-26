@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_purchaseorder_document_sayed_saleh">
+    <t t-call="web.basic_layout">
+        <!--<t t-set="o" t-value="o.with_context(lang=lang)" />-->
+        <style>
+            p.nospacing
+            {
+                margin: 0;
+            }
+
+        </style>
+        <t t-set="font_size_val" t-value="15"/>
+        <!--
+        <div class="footer o_background_footer">
+            <div class="text-center">
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page:
+                    <span class="page"/>
+                    of
+                    <span class="topage"/>
+                </div>
+            </div>
+        </div>
+        -->
+        <div class="footer">
+            <div class="text-right">
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page:
+                    <span class="page"/>
+                    of
+                    <span class="topage"/>
+                </div>
+            </div>
+        </div>
+        <div class="header">
+            <div class="row">
+                <div class="col-1"/>
+                <div class="col-3 float-left">
+                    <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 125px;width:100%;" alt="Logo"/>
+                </div>
+                <div class="col-7 float-center company_address">
+                    <div>
+                        <h4><strong t-field="o.company_id.partner_id.name"/></h4>
+                    </div>
+                    <span t-field="o.company_id.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'/>
+                    <div><strong>VAT NO: <span t-field="o.company_id.vat"/></strong></div>
+                </div>
+                <div class="col-1"/>
+            </div>
+        </div>
+        <div class="page">
+
+            <!--<div><strong>VAT ADDRESS: Flat/Shop No.0, Building 964, Road/Street 31, East Al-Eker, Block 623, The Capital, Bahrain</strong></div>-->
+            <b><h5 class="text-center">
+                <span t-if="o.state in ['sent', 'to approve']">PURCHASE ORDER</span>
+                <span t-if="o.state == 'draft'">REQUEST FOR QUOTATION</span>
+                <span t-if="o.state in ['purchase', 'done']">PURCHASE ORDER CONFIRMATION</span>
+                <span t-if="o.state == 'cancel'">CANCELLED PURCHASE ORDER</span>
+
+            </h5></b>
+            <p><strong>Customer Details:</strong></p>
+            <t t-set="address_vals" t-value="[]"/>
+            <t t-if="o.partner_id.street">
+                <t t-set="address_vals" t-value="address_vals + [o.partner_id.street]"/>
+            </t>
+            <t t-if="o.partner_id.street2">
+                <t t-set="address_vals" t-value="address_vals + [o.partner_id.street2]"/>
+            </t>
+            <t t-if="o.partner_id.city">
+                <t t-set="address_vals" t-value="address_vals + [o.partner_id.city]"/>
+            </t>
+            <t t-if="o.partner_id.zip">
+                <t t-set="address_vals" t-value="address_vals + ['P.O BOX '+o.partner_id.zip]"/>
+            </t>
+            <t t-if="o.partner_id.state_id">
+                <t t-set="address_vals" t-value="address_vals + [o.partner_id.state_id.name]"/>
+            </t>
+            <t t-if="o.partner_id.country_id">
+                <t t-set="address_vals" t-value="address_vals + [o.partner_id.country_id.name]"/>
+            </t>
+            <table class="table table-borderless table-sm o_main_table"  cellpadding="0" cellspacing="0" t-attf-style="width: 100%; border-collapse:collapse;border:1px solid black;border-radius: 10px;font-size: #{font_size_val}px;" name="customer_details_table">
+                <tbody>
+                    <tr>
+                        <td style="width:10%;"><strong>Code:</strong></td>
+                        <td style="width:45%;" colspan="3"><span t-field="o.partner_id.ref"/></td>
+                        <td style="width:5%;"></td>
+                        <td style="width:15%;"><strong>Doc Ref:</strong></td>
+                        <td style="width:20%;"><span t-field="o.name"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Name:</strong></td>
+                        <td colspan="3"><span t-field="o.partner_id.name"/></td>
+                        <td></td>
+                        <td><strong>Doc Date:</strong></td>
+                        <td><span t-field="o.date_order"/></td>
+
+                    </tr>
+                    <tr>
+                        <td><strong>Address:</strong></td>
+                        <td colspan="3">
+                            <p t-if="address_vals or contact_vals or o.partner_id.vat" class="nospacing">
+                                <span t-esc="', '.join(address_vals)"/>
+                            </p>
+                        </td>
+                        <td></td>
+                        <td><strong>VAT No:</strong></td>
+                        <td><span t-field="o.partner_id.vat"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile:</strong></td>
+                        <td style="width:12%;"><span t-field="o.partner_id.mobile"/></td>
+                        <td><strong>Phone:</strong></td>
+                        <td><span t-field="o.partner_id.phone"/></td>
+                        <td></td>
+                        <td><strong>Vendor Ref:</strong></td>
+                        <td><span t-field="o.partner_ref"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Remark:</strong></td>
+                        <td colspan="3"><span t-field="o.notes"/></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered table-sm o_main_table" name="po_line_table" t-attf-style="width: 100%;font-size: #{font_size_val}px;">
+                <thead>
+                    <tr>
+                        <t t-set="colspan" t-value="7"/>
+                        <th class="text-center">SN</th>
+                        <th class="text-center" style="width: 300px;">Item ID - Description</th>
+                        <th class="text-center">Qty</th>
+                        <th class="text-center">U/M</th>
+                        <th class="text-center">Date&#160;Req.</th>
+                        <th class="text-center">Unit&#160;Rate BD</th>
+                        <th class="text-center">Amount&#160;Excl.&#160;VAT BD</th>
+                        <th class="text-center">TAX&#160;Rate</th>
+                        <th class="text-center">VAT&#160;Amount BD</th>
+                        <th class="text-center">Amount&#160;Incl.&#160;VAT BD</th>
+                        <!--
+                        <th><strong>Description</strong></th>
+                        <th><strong>Taxes</strong></th>
+                        <th class="text-center"><strong>Date Req.</strong></th>
+                        <th class="text-right"><strong>Qty</strong></th>
+                        <th class="text-right"><strong>Unit Price</strong></th>
+                        <th class="text-right"><strong>Amount</strong></th>
+                        -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="sl_no" t-value="0"/>
+                    <tr t-foreach="o.order_line" t-as="line">
+                        <t t-set="sl_no" t-value="sl_no + 1"/>
+                        <td class="text-center">
+                            <span t-esc="sl_no"/>
+                        </td>
+                        <td>
+                            <span t-field="line.name"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="line.product_qty"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="line.product_uom.name"  />
+                        </td>
+                        <td class="text-center">
+                            <span t-field="line.date_planned"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="line.price_unit"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="line.price_subtotal"
+                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="', '.join(map(lambda x: x.name, line.taxes_id))"/>
+                        </td>
+                        <td class="text-center">
+                             <span t-esc="'{:,.3f}'.format(line.price_tax)"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="'{:,.3f}'.format(line.price_total)"/>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-borderless table-sm o_main_table"  cellpadding="0" cellspacing="0" name="customer_details_table" t-attf-style="width: 100%; border-collapse:collapse;border:1px solid black;border-radius: 10px;font-size: #{font_size_val}px;">
+                <tbody>
+                    <tr>
+                        <td><strong>Gross Amount:</strong></td>
+                        <td><strong><span t-field="o.amount_untaxed"/></strong></td>
+                        <td><strong>Total VAT:</strong></td>
+                        <td><strong><span t-field="o.amount_tax"/></strong></td>
+                        <td><strong>Net Total:</strong></td>
+                        <td><strong><span t-field="o.amount_total"/></strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--
+            <div id="total" class="row justify-content-end">
+                <div class="col-4">
+                    <table class="table table-sm">
+                        <tr class="border-black">
+                            <td><strong>Subtotal</strong></td>
+                            <td class="text-right">
+                                <span t-field="o.amount_untaxed"
+                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Taxes</td>
+                            <td class="text-right">
+                                <span t-field="o.amount_tax"
+                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr class="border-black o_total">
+                            <td><strong>Total</strong></td>
+                            <td class="text-right">
+                                <span t-field="o.amount_total"
+                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <p t-field="o.notes"/>
+            <div class="oe_structure"/>
+            -->
+            <div class="row" style="margin-top:20px;">
+                <div class="text-center float-right col-4" t-attf-style="font-size: #{font_size_val}px;height:80px;">
+                    <strong>Authorized Signatory</strong><br/>
+                    <div STYLE="background-color:#000000; height:1px; width:100%;margin-bottom:2px;margin-top:40px"/>
+                </div>
+                <div class="text-center float-right col-2"></div>
+                <div class="text-center float-right col-2"></div>
+                <div t-attf-style="font-size: #{font_size_val}px;height:80px;" class='float-left col-4 text-center'>
+                    <strong>Prepaired By</strong><br/>
+                    <div STYLE="background-color:#000000; height:1px; width:100%;margin-bottom:2px;margin-top:40px"/>
+                </div>
+
+            </div>
+        </div>
+    </t>
+</template>
+
+<template id="report_purchaseorder_sayed_saleh">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="sayed_saleh_custom_report.report_purchaseorder_document_sayed_saleh" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>

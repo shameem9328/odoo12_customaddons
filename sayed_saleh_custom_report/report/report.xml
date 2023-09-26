@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            id="account_invoices_sayed_saleh"
+            string="Sayed Saleh Invoices"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            file="sayed_saleh_custom_report.report_invoice_sayed_saleh"
+            name="sayed_saleh_custom_report.report_invoice_sayed_saleh"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            paperformat="sayed_saleh_custom_report.paperformat_sayed_saleh"
+        />
+        <report
+            id="account_invoices_sayed_saleh_a5"
+            model="account.invoice"
+            string="Sayed Saleh Invoices (A5)"
+            report_type="qweb-pdf"
+            name="sayed_saleh_custom_report.report_invoice_sayed_saleh_a5"
+            file="sayed_saleh_custom_report.report_invoice_sayed_saleh_a5"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            paperformat="sayed_saleh_custom_report.paperformat_sayed_saleh_a5"
+        />
+        <!--
+        <report
+            id="sale.action_report_saleorder"
+            string="Quotation / Order"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="sale.report_saleorder"
+            name="sale.report_saleorder"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+            menu="False"
+        />
+        -->
+        <report
+            id="action_report_saleorder_sayed_saleh"
+            string="Quotation / Order 2"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="sayed_saleh_custom_report.report_saleorder_sayed_saleh"
+            name="sayed_saleh_custom_report.report_saleorder_sayed_saleh"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+            paperformat="sayed_saleh_custom_report.paperformat_sayed_saleh"
+        />
+        <!--
+        <report
+            string="Purchase Order"
+            id="purchase.action_report_purchase_order"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            name="purchase.report_purchaseorder"
+            file="purchase.report_purchaseorder"
+            print_report_name="
+                (object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+            menu="False"
+        />
+        -->
+        <report
+            string="Purchase Order"
+            id="purchase.action_report_purchase_order"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            name="sayed_saleh_custom_report.report_purchaseorder_sayed_saleh"
+            file="sayed_saleh_custom_report.report_purchaseorder_sayed_saleh"
+            print_report_name="
+                (object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+
+        />
+        <report
+            string="Delivery Slip"
+            id="stock.action_report_delivery"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="sayed_saleh_custom_report.report_deliveryslip_sayed_saleh"
+            file="sayed_saleh_custom_report.report_deliveryslip_sayed_saleh"
+            print_report_name="'Delivery Slip - %s - %s' % (object.partner_id.name or '', object.name)"
+            paperformat="sayed_saleh_custom_report.paperformat_sayed_saleh"
+
+        />
+        <report
+            id="account.action_report_payment_receipt"
+            model="account.payment"
+            string="Payment Receipt"
+            report_type="qweb-pdf"
+            name="sayed_saleh_custom_report.report_payment_receipt_sayed_saleh"
+            file="sayed_saleh_custom_report.report_payment_receipt_sayed_saleh"
+            menu="True"
+            paperformat="sayed_saleh_custom_report.paperformat_sayed_saleh_a5"
+        />
+    </data>
+</odoo>

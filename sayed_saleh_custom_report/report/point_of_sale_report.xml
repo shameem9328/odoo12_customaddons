@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+    <report
+        id="report_user_label"
+        model="res.users"
+        string="User Labels"
+        report_type="qweb-pdf"
+        name="point_of_sale.report_userlabel"
+        file="point_of_sale.report_userlabel"
+    />
+
+    <record id="pos_invoice_report" model="ir.actions.report">
+        <field name="name">Invoice</field>
+        <field name="model">pos.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">point_of_sale.report_invoice</field>
+        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+    </record>
+
+    <record id="sale_details_report" model="ir.actions.report">
+        <field name="name">Sales Details</field>
+        <field name="model">report.point_of_sale.report_saledetails</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">point_of_sale.report_saledetails</field>
+    </record>
+    <template id="point_of_sale.report_invoice" inherit_id="al_dawlah_report.report_invoice_al_dawlah" primary="True"/>
+    
+    -->
+    <record id="point_of_sale.pos_invoice_report" model="ir.actions.report">
+        <field name="name">Invoice</field>
+        <field name="model">pos.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">point_of_sale.report_invoice</field>
+        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+        <field name="paperformat_id" ref="sayed_saleh_custom_report.paperformat_sayed_saleh_a5"/>
+    </record>
+    <template id="point_of_sale.report_invoice" inherit_id="sayed_saleh_custom_report.report_invoice_sayed_saleh_a5" primary="True"/>
+</odoo>
