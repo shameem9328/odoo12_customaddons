@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="invoice_form_custom" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="custom_journal_id" groups="account.group_account_user" options="{'no_create': True}" attrs="{'readonly':[('move_name','!=',False)]}"/>
+                </field>
+                <field name="user_id" position="after">
+                    <field name="origin" groups="base.group_user" attrs="{'invisible': [('origin', '=', False)]}"/>
+                </field>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

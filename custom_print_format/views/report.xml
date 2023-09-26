@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="paperformat_alhawaej_a5" model="report.paperformat">
+            <field name="name">Alhawaaej A5</field>
+            <field name="format">custom</field>
+            <field name="default" eval="True"/>
+            <field name="page_height">210</field>
+            <field name="page_width">148</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">25</field>
+            <field name="margin_bottom">12</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">100</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+            id="account_invoices_alhawaej_a5"
+            model="account.invoice"
+            string="ALHAWAEJ Invoices (A5)"
+            report_type="qweb-pdf"
+            name="custom_print_format.report_invoice_alhawaej_a5"
+            file="custom_print_format.report_invoice_alhawaej_a5"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            paperformat="custom_print_format.paperformat_alhawaej_a5"
+        />
+
+    </data>
+</odoo>

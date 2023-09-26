@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="point_of_sale.report_invoice" inherit_id="custom_print_format.report_invoice_alhawaej_a5" primary="True"/>
+</odoo>
