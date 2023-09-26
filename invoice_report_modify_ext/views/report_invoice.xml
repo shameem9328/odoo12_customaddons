@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="account.report_invoice_document">
+            <t t-call="invoice_report_modify_ext.custom_external_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)" />
+                
+                <div class="page">
+                    <table style="width:100%;">
+                    <tbody>
+                    <tr>
+                    	<td style="font-size: 15px;width:30%">
+	                    	<t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+	                    	<strong>Invoice No: </strong><span t-field="o.number"/>
+	                    	</t>
+                    	</td>    
+                    	<td style="text-align: center;width:40%;"/>
+	                    <td style="width:30%">
+		                    
+	                    </td>
+                    </tr>
+                    <tr><td style="width:30%"/>
+	                    <td style="text-align: center;width:40%;">
+	                    <h3><strong>
+	                    	<span t-if="o.type == 'out_invoice' and o.state in ('open', 'in_payment', 'paid')">INVOICE</span>
+	                      	<span t-if="o.type == 'out_invoice' and o.state == 'draft'">Draft Invoice</span>
+	                      	<span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Cancelled Invoice</span>
+	                      	<span t-if="o.type == 'out_refund'">Credit Note</span>
+	                      	<span t-if="o.type == 'in_refund'">Vendor Credit Note</span>
+	                      	<span t-if="o.type == 'in_invoice'">Order Form</span>
+	                     </strong></h3>
+	                    </td><td style="width:30%"/>
+                    </tr>
+                    <tr>
+	                    <td colspan="3" style="text-align: center;">
+		                    <h5>
+		                    	(<span t-field="o.insurance_type"/>)
+		                    </h5>
+	                    </td>
+                    </tr>
+                    
+                    <tr>
+                    	<td style="font-size: 15px;">
+	                    	<t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+	                    	<strong>Policy No: </strong><span t-field="o.policy_no"/>
+	                    	</t>
+                    	</td>
+                    	<td style="text-align: center;"/>
+	                    <td>
+		                    <t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+	                    	<strong>Date of Issue: </strong><span t-field="o.date_invoice"/>
+	                    	</t>
+	                    </td>
+                    </tr>
+                    <t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+                    <tr>
+                    <td colspan="3">
+                    <h5>INSURANCE COMPANY: <strong><span t-field="o.partner_id.name"/></strong></h5>
+                    </td>
+                    </tr>
+                    </t>
+                    </tbody>
+                    </table>
+                    <br/>
+                    <t t-if="o.type == 'out_refund' or o.type == 'out_invoice'">
+                    <div id="address" class="row">
+                    <div class="col-8">
+                    	<div><strong><span t-field="o.partner_id.name"/></strong></div>
+                    	<address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' />
+                    	<div><strong>Customer Phone:</strong><span t-field="o.partner_id.phone"/></div>
+                    	<div><h5><strong><span t-field="o.number"/></strong></h5></div>
+                    	<div><p><strong>Care of:  </strong><span t-field="o.partner_id.company_type"/></p></div>
+                    </div>
+                    <div class="col-4">
+                    	<div name="invoice_date"><strong>Date:	</strong><span t-field="o.date_invoice"/></div>
+                    	<div name="policy_no"><strong>Policy No:	</strong><span t-field="o.policy_no"/></div>
+                    	<div name="insuranced_name"><strong>Insured Name:	</strong><span t-esc="o.get_insured_name()"/></div>
+                    	<t t-if="o.insured_person.cpr_no">
+                    	<div name="cpr_no"><strong>CPR:	</strong><span t-esc="o.insured_person.cpr_no"/></div>
+                    	</t>
+                    	<!-- 
+                    	<address t-field="o.insured_person" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' />
+                    	 -->
+                    	<div name="invoice_date"><strong>Expiry Date:	</strong><span t-field="o.date_to"/></div>
+                    	<div name="origin"><strong>Order: </strong><span t-field="o.origin"/></div>
+                    	<div class="d-none" name="due_date"><strong>Due Date: </strong><span t-field="o.date_due"/></div>
+                    	<div class="d-none" name="reference"><strong>Reference: </strong><span t-field="o.reference"/></div>
+                    </div>
+                    </div>
+                    </t>
+                    <t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+                    <span><h5><strong>Personal Information:</strong></h5></span>
+					<table style="border: 2px solid black;" class="table table-sm o_main_table" name="personal_info_table">
+					<td style="width:50%;">
+						<t t-if="o.get_vendor_cpr_or_cr()">
+                    	<t t-set="column" t-value="o.get_vendor_cpr_or_cr()"/>
+                    	<t t-set="cpr_cr" t-value="column['cpr_cr']"/>
+                    	<t t-set="value" t-value="column['value']"/>
+						<div name="CPR"><strong><span t-esc="cpr_cr"/>: </strong><span t-esc="value"/></div>
+                    	</t>
+                    	<div name="invoice_date"><strong>Insured Name:	</strong><span t-esc="o.get_vendor_insured_name()"/></div>
+                    	<!-- 
+                    	<div name="address"><strong>Address:</strong><address t-field="o.insured_person" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' /></div>
+                    	-->
+                    	<t t-if="o.get_vendor_insured_address()">
+                    	<t t-set="column" t-value="o.get_vendor_insured_address()"/>
+                    	<t t-set="insur_street" t-value="column['insur_street']"/>
+	                    <t t-set="insur_city" t-value="column['insur_city']"/>
+	                    <t t-set="insur_country" t-value="column['insur_country']"/>
+	                    <t t-set="insur_phone" t-value="column['insur_phone']"/>
+                    	<t t-set="insur_email" t-value="column['insur_email']"/>
+                    	<div name="address"><strong>Address:</strong>
+	                    <t t-if="len(insur_street)">
+	                    	<t t-foreach="len(insur_street)" t-as="i" >
+	                    		<span t-esc="insur_street[i]"/>
+	                    	</t>
+	                    </t><t t-if="len(insur_city)"><br/>
+	                    	<t t-foreach="len(insur_city)" t-as="i" >
+	                    		<span t-esc="insur_city[i]"/>
+	                    	</t>
+	                    </t><t t-if="len(insur_country)">,
+	                    	<t t-foreach="len(insur_country)" t-as="i" >
+	                    		<span t-esc="insur_country[i]"/>
+	                    	</t>
+	                    </t><t t-if="len(insur_phone)"><br/>Phone:
+	                    	<t t-foreach="len(insur_phone)" t-as="i" >
+	                    		<span t-esc="insur_phone[i]"/>
+	                    	</t>
+	                    </t><t t-if="len(insur_email)"><br/>Email:
+	                    	<t t-foreach="len(insur_email)" t-as="i" >
+	                    		<span t-esc="insur_email[i]"/>
+	                    	</t>
+                    	</t>
+                    	</div>
+                    	</t>
+					</td>
+					<td style="width:50%;"/>
+					</table>	
+                    </t>
+                    
+                    <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+					<br/>
+					<t t-if="o.insurance_type == 'motor'">
+						<span><h5><strong>Vehicle Details:</strong></h5></span>
+						<table style="border: 2px solid black;" class="table table-sm o_main_table" name="motor_line_table">
+						<thead>
+	                    <tr style="border: 2px solid black;">
+	                    	<th style="border: 2px solid black;" class="text-left"><span>Reg No. </span></th>
+	                    	<th style="border: 2px solid black;" class="text-left"><span>Chasis No. </span></th>
+	                    	<t t-if="o.type == 'out_refund' or o.type == 'out_invoice'">
+		                    	<th style="border: 2px solid black;" class="text-left"><span>Type of Cover </span></th>
+	                    		<th style="border: 2px solid black;" class="text-left"><span>Value </span></th>
+	                    	</t>
+	                    	<th style="border: 2px solid black;" class="text-left"><span>Make </span></th>
+	                    	<th style="border: 2px solid black;" class="text-left"><span>Model </span></th>
+	                    	<t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+	                    		<th style="border: 2px solid black;" class="text-left"><span>Cylinder </span></th>
+	                    		<th style="border: 2px solid black;" class="text-left"><span>Year of Make </span></th>
+	                    		<th style="border: 2px solid black;" class="text-left"><span>CC </span></th>
+	                    		<th style="border: 2px solid black;" class="text-left"><span>Type </span></th>
+	                    		<th style="border: 2px solid black;" class="text-left"><span>Plate </span></th>
+	                    	</t>
+	                    </tr>
+	                    </thead>
+	                    <tbody>
+	                    <t t-set="column" t-value="o.get_vehicle_details()"/>
+	                    <t t-set="row_count" t-value="column['row_count']"/>
+	                    <t t-set="col_reg_no" t-value="column['col_reg_no']"/>
+	                    <t t-set="col_chasis_no" t-value="column['col_chasis_no']"/>
+	                    <t t-set="col_type_of_cover" t-value="column['col_type_of_cover']"/>
+	                    <t t-set="col_make" t-value="column['col_make']"/>
+	                    <t t-set="col_model" t-value="column['col_model']"/>
+	                    <t t-set="col_cylinder" t-value="column['col_cylinder']"/>
+	                    <t t-set="col_year" t-value="column['col_year']"/>
+	                    <t t-set="col_cc" t-value="column['col_cc']"/>
+	                    <t t-set="col_type" t-value="column['col_type']"/>
+	                    <t t-set="col_plate" t-value="column['col_plate']"/>
+	                    <t t-set="col_value" t-value="column['col_value']"/>
+	                    <t t-foreach="range(row_count)" t-as="i">
+		                    <tr>
+		                    <td style="border: 2px solid black;" name="account_invoice_line_Reg_no"><span t-esc="col_reg_no[i]"/></td>
+		                    <td style="border: 2px solid black;" name="account_invoice_line_chasis_no"><span t-esc="col_chasis_no[i]"/></td>
+		                    <t t-if="o.type == 'out_refund' or o.type == 'out_invoice'">
+		                    	<td style="border: 2px solid black;" name="account_invoice_line_type_of_cover"><span t-esc="col_type_of_cover[i]"/></td>
+		                    	<td style="border: 2px solid black;" name="account_invoice_line_model"><span t-esc="col_value[i]"/></td>
+		                    </t>
+		                    <td style="border: 2px solid black;" name="account_invoice_line_make"><span t-esc="col_make[i]"/></td>
+		                    <td style="border: 2px solid black;" name="account_invoice_line_model"><span t-esc="col_model[i]"/></td>
+		                    <t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+		                    	<td style="border: 2px solid black;" name="account_invoice_line_cylinder"><span t-esc="col_cylinder[i]"/></td>
+			                    <td style="border: 2px solid black;" name="account_invoice_line_year"><span t-esc="col_year[i]"/></td>
+			                    <td style="border: 2px solid black;" name="account_invoice_line_cc"><span t-esc="col_cc[i]"/></td>
+			                    <td style="border: 2px solid black;" name="account_invoice_line_type"><span t-esc="col_type[i]"/></td>
+			                    <td style="border: 2px solid black;" name="account_invoice_line_plate"><span t-esc="col_plate[i]"/></td>
+			                    
+		                    </t>
+		                    </tr>
+	                    </t>
+	                    </tbody>
+						</table>				
+						
+						
+					</t>
+                    <br/>
+                    <t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+	                    <t t-set="column" t-value="o.get_sum_insured_details()"/>
+		                <t t-set="row_count" t-value="column['row_count']"/>
+		                <t t-set="row_sum_insured" t-value="column['col_sum_insured']"/>
+		                <t t-set="row_description" t-value="column['col_description']"/>
+		                <t t-set="row_value" t-value="column['col_value']"/>
+		                <t t-set="row_periode" t-value="column['col_periode']"/>
+		                <t t-set="row_sub_total" t-value="column['col_sub_total']"/>
+		                <t t-set="row_total" t-value="column['col_total']"/>
+		                <t t-if="row_count">
+	                	<span><h5><strong>Sum Insured Details:</strong></h5></span>
+						<table style="border: 2px solid black;" class="table table-sm o_main_table" name="motor_line_table">
+						<thead>
+	                    <tr style="border: 2px solid black;">
+	                    	<th style="border: 2px solid black;" class="text-left"><span>Sum Insured </span></th>
+	                    	<th style="border: 2px solid black;" class="text-left"><span>Description </span></th>
+	                    	<th style="border: 2px solid black;" class="text-left"><span>Value </span></th>
+	                    	<th style="border: 2px solid black;" class="text-left"><span>Periode </span></th>
+	                    	<th style="border: 2px solid black;" class="text-left"><span>Total </span></th>
+	                    </tr>
+	                    </thead>
+	                    <tbody>
+	                    <t t-foreach="range(row_count)" t-as="i">
+		                    <tr>
+		                    <td style="border: 2px solid black;" name="account_invoice_line_sum_insured"><span t-esc="row_sum_insured[i]"/></td>
+		                    <td style="border: 2px solid black;" name="account_invoice_line_description"><span t-esc="row_description[i]"/></td>
+		                    <td style="border: 2px solid black;" name="account_invoice_line_value"><span t-esc="row_value[i]"/></td>
+		                    <td style="border: 2px solid black;" name="account_invoice_line_periode"><span t-esc="row_periode[i]"/></td>
+		                    <td style="border: 2px solid black;" name="account_invoice_line_sub_total"><span t-esc="row_sub_total[i]"/></td>
+		                    </tr>
+	                    </t>
+	                    <tr>
+	                    <td class="text-right" style="border: 2px solid black;" colspan="4"><span>Grand Total </span></td>
+	                    <td style="border: 2px solid black;"><span t-esc="row_total"/></td>
+	                    </tr>
+	                    </tbody>
+						</table>
+			        	<br/>
+			        	</t>
+			        </t>
+			           
+                    <span><h5><strong>Insurance Details:</strong></h5></span>
+                    <t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+                    <!-- 
+                    <div id="insurance_details" class="row mt32 mb32">
+		                <div t-if="o.excess_amt" class="col-3 bm-2">
+		                    <strong>Excess:</strong>
+		                    <p t-field="o.excess_amt" class="m-0"/>
+		                </div>
+		                <div t-if="o.get_policy_type()" class="col-3 bm-2">
+		                    <strong>Policy Type:</strong>
+		                    <p t-esc="o.get_policy_type()" class="m-0"/>
+		                </div>
+		                <div t-if="o.get_previous_policy()" class="col-3 bm-2">
+		                    <strong>Previous Policy:</strong>
+		                    <p t-esc="o.get_previous_policy()" class="m-0"/>
+		                </div>
+		                <div t-if="o.date_to" class="col-3 bm-2">
+		                    <strong>Expiry Date: </strong>
+		                    <p t-field="o.date_to" class="m-0"/>
+		                    
+		                </div>
+                    </div>
+                    
+                    -->
+                    <table style="border: 2px solid black;" class="table table-sm o_main_table" name="invoice_line_table">
+                        <tbody>
+                            <tr>
+                    			<td><strong>FROM: </strong></td>
+                    			<td><span t-field="o.date_from"/></td>
+                    			<td><strong>Expiry Date: </strong></td>
+                    			<td><span t-field="o.date_to"/></td>
+                    		</tr>
+                    		<tr>
+                    			<td><strong>Excess: </strong></td>
+                    			<td><span t-field="o.excess_amt"/></td>
+                    			<td><strong>Value: </strong></td>
+                    			<td><span t-esc="o.get_sum_insured()"/></td>
+                    		</tr>
+                    		<tr>
+                    			<td><strong>Policy Type: </strong></td>
+                    			<td><span t-esc="o.get_policy_type()"/></td>
+                    			<t t-if="o.get_policy_type() == 'renew'">
+                    			<td><strong>Previous Policy: </strong></td>
+                    			<td><span t-esc="o.get_previous_policy()"/></td>
+                    			</t>
+                    			<t t-else="">
+                    			<td colspan="2"/>
+                    			</t>
+                    		</tr>
+                    		<t t-if="o.insurance_type == 'motor'">
+                    		<tr>
+                    			<td><strong>Type of Cover: </strong></td>
+                    			<td><span t-esc="o.get_type_of_cover()"/></td>
+                    			<td><strong>Road Assistance: </strong></td>
+                    			<td><span t-esc="o.get_road_assist()"/></td>
+                    		</tr>
+                    		</t>
+                    	</tbody>
+                    </table>
+                     
+                    </t>
+					<table style="border: 2px solid black;" class="table table-sm o_main_table" name="invoice_line_table">
+                        <thead>
+                            <tr style="border: 2px solid black;">
+                                <!-- TODO: remove in master -->
+                                <t t-set="colspan" t-value="4"/>
+                                <th class="text-left"><span>Description</span></th>
+                                <th class="d-none text-left"><span>Source Document</span></th>
+                                <t t-if="o.is_tax_hide != True">
+                                <th t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Unit Price</span></th>
+                                </t>
+                                <th t-if="display_discount" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                                    <span>Disc.(%)</span>
+                                    <!-- TODO: remove in master -->
+                                    <t t-set="colspan" t-value="colspan+1"/>
+                                </th>
+                                <t t-if="o.is_tax_hide != True">
+                                <th t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Taxes</span></th>
+                                </t>
+                                <t t-if="o.is_tax_hide != True">
+                                <th class="text-right">
+                                    <span groups="account.group_show_line_subtotals_tax_excluded">Amount</span>
+                                    <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
+                                </th>
+                                </t>
+                                <t t-if="o.is_tax_hide == True">
+                                <th class="text-right">
+                                <span>Total Price(Tax Included)</span>
+                                </th>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody class="invoice_tbody">
+                            <t t-set="current_subtotal" t-value="0"/>
+							<t t-foreach="o.invoice_line_ids" t-as="line">
+								<t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type" name="account_invoice_line_accountable">
+                                        <td name="account_invoice_line_name"><span t-field="line.name"/></td>
+                                        <td class="d-none"><span t-field="line.origin"/></td>
+                                        <t t-if="o.is_tax_hide != True">
+                                        	<td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                                            	<span t-field="line.price_unit"/>
+                                        	</td>
+                                        </t>
+                                        <td t-if="display_discount" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                                            <span t-field="line.discount"/>
+                                        </td>
+                                        <t t-if="o.is_tax_hide != True">
+                                        	<td t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                                            	<span t-esc="', '.join(map(lambda x: (x.description or x.name), line.invoice_line_tax_ids))"/>
+                                        	</td>
+                                        </t>
+                                        <t t-if="o.is_tax_hide != True">
+                                        <td class="text-right o_price_total">
+                                            <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                            <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                        </td>
+                                        </t>
+                                        <t t-if="o.is_tax_hide == True">
+                                        <td class="text-right o_price_total">
+                                        <span t-field="line.price_total"/>
+                                        </td>
+                                        </t>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_section'">
+                                        <td colspan="99">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <t t-set="current_section" t-value="line"/>
+                                        <t t-set="current_subtotal" t-value="0"/>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_note'">
+                                        <td colspan="99">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                    </t>
+                                </tr>
+
+                                <t t-if="current_section and (line_last or o.invoice_line_ids[line_index+1].display_type == 'line_section')">
+                                    <tr class="is-subtotal text-right">
+                                        <td colspan="99">
+                                            <strong class="mr16">Subtotal</strong>
+                                            <span
+                                                t-esc="current_subtotal"
+                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                            />
+                                        </td>
+                                    </tr>
+                                </t>
+                                
+                            </t>
+                        </tbody>
+                    </table>
+					<!-- 
+                    <div class="clearfix">
+                        <div id="total" class="row">
+                            <div t-attf-class="#{'col-5' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                <table class="table table-sm;page-break-inside: avoid;">
+                                	<tr class="border-black o_total">
+                                        <td style="border: 2px solid black;"><strong>Total</strong></td>
+                                        <td style="border: 2px solid black;" class="text-right">
+                                            <span t-field="o.amount_total"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                            </div>
+                        </div>
+                    </div>
+                     -->
+                     <div class="clearfix">
+                        <div id="total" class="row">
+                            <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                <table class="table table-sm;page-break-inside: avoid;">
+                                    <t t-if="o.is_tax_hide != True">
+                                    <t t-if="o.type != 'in_refund' and o.type != 'in_invoice'">
+                                    <tr class="border-black o_subtotal" style="">
+                                        <td><strong>Subtotal</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount_untaxed"/>
+                                        </td>
+                                    </tr>
+                                    
+                                    <t t-foreach="o.amount_by_group" t-as="amount_by_group">
+                                        <tr style="">
+                                            <t t-if="len(o.tax_line_ids) == 1 and o.amount_untaxed == amount_by_group[2]">
+                                                <td><span t-esc="amount_by_group[0]"/></td>
+                                                <td class="text-right o_price_total">
+                                                    <span t-esc="amount_by_group[3]" />
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td>
+                                                    <span t-esc="amount_by_group[0]"/>
+                                                    <span>&amp;nbsp;<span>on</span>
+                                                        <t t-esc="amount_by_group[4]"/>
+                                                    </span>
+                                                </td>
+                                                <td class="text-right o_price_total">
+                                                    <span t-esc="amount_by_group[3]"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                    </t>
+                                    </t>
+                                    <tr class="border-black o_total">
+                                        <td><strong>Total</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount_total"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <p t-if="o.currency_id"> 
+                    <strong>[ <span t-esc="o.check_amount_in_words(o.amount_total, o.currency_id)"/> ]</strong>
+                    </p>
+                    <t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+                    <t t-if="o.get_vendor_remark()">
+                    <strong>Remarks:</strong><span t-esc="o.get_vendor_remark()"/>
+                    </t></t>
+                    <p t-if="o.reference">
+                        Please use the following communication for your payment : <b><span t-field="o.reference"/></b>
+                    </p>
+                    <p t-if="o.comment" name="comment">
+                        <span t-field="o.comment"/>
+                    </p>
+                    <p t-if="o.payment_term_id" name="payment_term">
+                        <span t-field="o.payment_term_id.note"/>
+                    </p>
+                    <p t-if="o.fiscal_position_id.note" name="note">
+                        <span t-field="o.fiscal_position_id.note"/>
+                    </p>
+                    <div id="qrcode" t-if="(o.company_id.qr_code) and (o.currency_id.name == 'EUR') and (o.partner_bank_id.acc_number != False)">
+                        <p t-if="(o.partner_bank_id.qr_code_valid)">
+                            <strong class="text-center">Scan me with your banking app.</strong><br /><br />
+                            <img class="border border-dark rounded" t-att-src="o.partner_bank_id.build_qr_code_url(o.residual,(o.reference) if (o.reference) else o.number)"/>
+                        </p>
+                        <p t-if="(o.partner_bank_id.qr_code_valid == False)">
+                            <strong class="text-center">The SEPA QR Code informations are not set correctly.</strong><br />
+                        </p>
+                    </div>
+                    <t t-if="o.type == 'out_refund' or o.type == 'out_invoice'">
+                    <p t-if="o.user_id"> 
+                    <strong><span t-esc="o.user_id.name"/></strong>
+                    <t t-if="o.user_id.partner_id.function"><br/><span t-esc="o.user_id.partner_id.function"/></t>
+                    <t t-if="o.user_id.partner_id.phone"><br/><span t-esc="o.user_id.partner_id.phone"/></t>
+                    <t t-if="o.user_id.partner_id.mobile"><br/><span t-esc="o.user_id.partner_id.mobile"/></t>
+                    <t t-if="o.user_id.partner_id.email"><br/><span t-esc="o.user_id.partner_id.email"/></t>
+                    </p>
+                    </t>
+                    <t t-if="o.type == 'in_refund' or o.type == 'in_invoice'">
+                    <div id="address" class="row">
+                    	<div class="col-6">
+                    		<strong>Printed Date/Time : </strong><span t-esc="o.get_date_now()"/>
+                    		
+                    	</div>
+                    	<div class="col-6">
+                    		<strong>Printed by : </strong><span t-esc="o.user_id.name"/>
+                    	</div>
+                    </div>
+                    </t>
+                </div>
+            </t>
+        </template>
+
+        <template id="account.report_invoice_document_with_payments" inherit_id="account.report_invoice_document" primary="True">
+            <xpath expr="//div[@id='total']/div/table" position="inside">
+            	<t t-set="payments_vals" t-value="o._get_payments_vals()"/>
+            	<t t-foreach="payments_vals" t-as="payment_vals">
+                    <tr>
+                        <td>
+                            <i class="oe_form_field text-right oe_payment_label">Paid on <t t-esc="payment_vals['date']"/></i>
+                        </td>
+                        <td class="text-right">
+                            <span t-esc="payment_vals['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                        </td>
+                    </tr>
+                </t>
+                <t t-if="len(payments_vals) > 0">
+                    <tr class="border-black">
+                        <td><strong>Amount Due</strong></td>
+                        <td class="text-right">
+                             <span t-field="o.residual"/>
+                        </td>
+                    </tr>
+                </t>
+            	<!-- 
+            	<t t-if="len(payments_vals) > 0">
+	                 <tr>
+	                     <td style="border: 2px solid black;"><strong>Payment</strong></td>
+	                     <td style="border: 2px solid black;" class="text-right">
+	                          <span t-esc="o.amount_total-o.residual"/>
+	                     </td>
+	                 </tr>
+                
+                    <tr>
+                        <td style="border: 2px solid black;"><strong>Amount Due</strong></td>
+                        <td style="border: 2px solid black;" class="text-right">
+                             <span t-field="o.residual"/>
+                        </td>
+                    </tr>
+                </t> -->
+            </xpath>
+        </template>
+		<!-- 
+        <template id="account.report_invoice">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.user_id.lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="account.report_invoice_document" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_invoice_with_payments">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.user_id.lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="account.report_invoice_document_with_payments" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+         -->
+    </data>
+</odoo>

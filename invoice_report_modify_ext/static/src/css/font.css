@@ -1,0 +1,17 @@
+/* --- Fonts --- */
+
+@font-face{
+    font-family: Bukra;
+	font-style: normal;
+    src:url('/invoice_report_modify_ext/static/fonts/29ltbukrabold.ttf') format('truetype'),
+	url('/invoice_report_modify_ext/static/fonts/29ltbukrabolditalic.ttf') format('truetype'),
+	url('/invoice_report_modify_ext/static/fonts/29ltbukralight.ttf') format('truetype'),
+	url('/invoice_report_modify_ext/static/fonts/29ltbukraregular.ttf') format('truetype');
+    
+	
+}
+h2{
+    font-family:Bukra;
+    color:blue;
+    text-align:center;
+ }
