@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<!--  
+		<record id="account.action_invoice_tree1" model="ir.actions.act_window">
+            <field name="name">Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','=','out_invoice')]</field>
+            <field name="context">{'type':'out_invoice', 'journal_type': 'sale','create':False}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a customer invoice
+              </p><p>
+                Create invoices, register payments and keep track of the discussions with your customers.
+              </p>
+            </field>
+        </record>
+        -->
+		 <record id="view_account_invoice_filter_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.select.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+            	<filter name="activities_my" position='before'>
+            	  		<filter string="Delivery" name="del_method_del"
+                        	domain="[('del_method', '=', 'del')]"/>
+                 		<filter string="Take Away" name="del_method_ta"
+                        	domain="[('del_method', '=', 'ta')]"/>
+                    <separator/>
+                    	<filter string="Sure Delivery" name="del_sure_sure"
+                        	domain="[('del_sure', '=', 'sure')]"/>
+                 		<filter string="Not Sure Delivery" name="del_sure_not_sure"
+                        	domain="[('del_sure', '=', 'not_sure')]"/>
+                  	<separator/>
+            	  </filter>
+            	   
+            	    <filter name="duedate" position='after'>
+            	    	<filter string="Delivery Date" name="del_date_by" domain="[]" context="{'group_by':'del_date'}"/>
+            	    	<filter string="DEL/TA" name="del_method_group_by" domain="[]" context="{'group_by':'del_method'}"/>
+            	    	<filter string="Del. Sure/Not" name="del_sure_group_by" domain="[]" context="{'group_by':'del_sure'}"/>
+            	    </filter>
+				<field name="user_id" position="after">
+					<field name="name"/>
+				</field>
+            </field>
+         </record>
+         
+         <record model="ir.ui.view" id="account_invoice_form_inherit">
+            <field name="name">Account Invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="sale.account_invoice_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='team_id']" position='attributes'>
+            		<attribute name='readonly'>1</attribute>
+            	</xpath>
+            </field>
+         </record>
+
+		<record id="invoice_form_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+            	<field name='user_id' position='after'>
+            		<field name='del_date' attrs="{'readonly':[('state','in',['paid','cancel'])]}"/>
+            		<field name='del_method' widget='selection' attrs="{'readonly':[('state','in',['paid','cancel'])]}"/>
+            		<field name='del_sure' widget='selection' attrs="{'readonly':[('state','in',['paid','cancel'])]}"/>
+            	</field>
+            </field>
+       	</record>
+       	
+       	 <record id="invoice_tree_inherit" model="ir.ui.view">
+	         <field name="name">account.invoice.tree.inherit</field>
+	         <field name="model">account.invoice</field>
+	         <field name="inherit_id" ref="account.invoice_tree"/>
+	         <field name="arch" type="xml">
+	         	<field name="origin" position='after'>
+	         		<field name="del_date"/>
+	         		<field name="del_method"/>
+	         		<field name="del_sure"/>
+					<field name="name"/>
+	         	</field>
+	         </field>
+         </record>
+</odoo>

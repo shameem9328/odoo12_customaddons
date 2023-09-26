@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_account_partial_reconcile group_account_invoice","account.partial.reconcile group_account_invoice","account.model_account_partial_reconcile","account.group_account_invoice",0,0,0,1
+"access_account_full_reconcile group_account_invoice","account.full.reconcile group_account_invoice","account.model_account_full_reconcile","account.group_account_invoice",1,0,1,1
+"access_account_reconcile_model group_account_invoice","account.reconcile.model group_account_invoice","account.model_account_reconcile_model","account.group_account_invoice",1,0,0,0

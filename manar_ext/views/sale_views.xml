@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	 <record id="view_sales_order_filter_inherit" model="ir.ui.view">
+	     <field name="name">sale.order.list.select.inherit</field>
+	     <field name="model">sale.order</field>
+	     <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+	     <field name="arch" type="xml">
+	     	<field name='name' position='replace'>
+	     		<field name="name" string="Sales Order" filter_domain="['|','|','|','|',('name','ilike',self),('client_order_ref','ilike',self),('partner_id','child_of',self),
+	     																        ('partner_id.mobile','ilike',self),('partner_id.phone','ilike',self)]"/>
+	     	</field>
+	     	<filter name="order_month" position='after'>
+	     		<filter string="DEL/TA" name="del_method_group_by" domain="[]" context="{'group_by':'del_method'}"/>
+	     		<filter string="Del. Sure/Not" name="del_sure_group_by" domain="[]" context="{'group_by':'del_sure'}"/>
+	     	</filter>
+	     	<filter name="activities_my" position='before'>
+	     		<filter string="Delivery" name="del_method_del"
+                        domain="[('del_method', '=', 'del')]"/>
+                 <filter string="Take Away" name="del_method_ta"
+                        domain="[('del_method', '=', 'ta')]"/>
+                <separator/>
+                <filter string="Sure Delivery" name="del_sure_sure"
+                        	domain="[('del_sure', '=', 'sure')]"/>
+           		<filter string="Not Sure Delivery" name="del_sure_not_sure"
+                  	domain="[('del_sure', '=', 'not_sure')]"/>
+               <separator/>
+	     	</filter>
+			<field name="user_id" position="after">
+				<field name="client_order_ref"/>
+			</field>
+	     </field>
+     </record>
+	<record id="view_order_form_inherit" model="ir.ui.view">
+           <field name="name">sale.order.form.inherit</field>
+           <field name="model">sale.order</field>
+           <field name="inherit_id" ref="sale.view_order_form"/>
+           <field name="arch" type="xml">
+           		<field name="partner_shipping_id" position='after'>
+           			<field name="team_id" options="{'no_create': True}" readonly='1'/>
+           		</field>
+           		<xpath expr="//page[2]" position='attributes'>
+           			<attribute name='invisible'>1</attribute>
+           		</xpath>
+           		<xpath expr="//page[3]" position='attributes'>
+           			<attribute name='invisible'>1</attribute>
+           		</xpath>
+           		<xpath expr="//field[@name='validity_date']" position='attributes'>
+           			<attribute name='invisible'>1</attribute>
+           		</xpath>
+           		<!--  
+	            <xpath expr="//field[@name='commitment_date']" position="attributes">
+	            	<attribute name='invisible'>1</attribute>
+	             </xpath>
+	            -->
+	            <xpath expr="//field[@name='payment_term_id']" position="after">
+	            	<field name='del_method' widget='selection' attrs="{'readonly':[('state','in',['done','cancel'])]}"/>
+	            	<field name='del_sure' widget='selection' attrs="{'readonly':[('state','in',['done','cancel'])]}"/>
+	           		<field name="commitment_date" groups="sale.group_sale_order_dates" attrs="{'readonly':[('state','in',['done','cancel'])]}"/>
+					<field name="warehouse_id" options="{'no_create': True}" groups="stock.group_stock_multi_locations"/>
+					<field name="client_order_ref"/>
+				</xpath>
+			   <xpath expr="//field[@name='carrier_id']" position='attributes'>
+           			<attribute name='invisible'>1</attribute>
+			   </xpath>
+			   <xpath expr="//label[@for='carrier_id']" position='attributes'>
+           			<attribute name='invisible'>1</attribute>
+			   </xpath>
+				
+				<xpath expr="//tree/field[@name='name']" position='after'>
+            		<field name='can_edit_unit_price' invisible='1'/>
+            		<field name='can_edit_tax' invisible='1'/>
+            	</xpath>
+            	<xpath expr="//field[@name='order_line']/form//field[@name='price_unit']" position='after'>
+            		<field name='can_edit_unit_price' invisible='1'/>
+            		<field name='can_edit_tax' invisible='1'/>
+            	</xpath>
+            	<xpath expr="//field[@name='order_line']/tree//field[@name='price_unit']" position="attributes">
+                    <attribute name="force_save">1</attribute>
+                    <attribute name='attrs'>
+                    	{'readonly': [('can_edit_unit_price', '=', False)]}
+                    </attribute>
+                </xpath>
+				<xpath expr="//field[@name='order_line']/form//field[@name='price_unit']" position="attributes">
+                    <attribute name="force_save">1</attribute>
+                    <attribute name='attrs'>
+                    	{'readonly': [('can_edit_unit_price', '=', False)]}
+                    </attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='order_line']/tree//field[@name='tax_id']" position="attributes">
+                    <attribute name="force_save">1</attribute>
+                    <attribute name='attrs'>
+                    	{'readonly': [('can_edit_tax', '=', False)]}
+                    </attribute>
+                </xpath>
+				<xpath expr="//field[@name='order_line']/form//field[@name='tax_id']" position="attributes">
+                    <attribute name="force_save">1</attribute>
+                    <attribute name='attrs'>
+                    	{'readonly': [('can_edit_tax', '=', False)]}
+                    </attribute>
+                </xpath>
+
+			</field>
+	</record>
+	
+	<record id="view_quotation_tree_inherit" model="ir.ui.view">
+	    <field name="name">sale.order.tree.inherit</field>
+	    <field name="model">sale.order</field>
+	    <field name="inherit_id" ref="sale.view_quotation_tree"/>
+	    <field name="arch" type="xml">
+	    	<field name="partner_id" position='before'>
+	    		<field name='del_method'/>
+	    		<field name='del_sure'/>
+				<field name='client_order_ref'/>
+	    	</field>
+	    </field>
+	</record>
+	 
+	 <record id="view_order_tree_inherit" model="ir.ui.view">
+	    <field name="name">sale.order.tree.inherit</field>
+	    <field name="model">sale.order</field>
+	    <field name="inherit_id" ref="sale.view_order_tree"/>
+	    <field name="arch" type="xml">
+	    	<field name="partner_id" position='before'>
+	    		<field name='del_method'/>
+	    		<field name='del_sure'/>
+				<field name='client_order_ref'/>
+	    	</field>
+	    </field>
+	</record>
+            
+</odoo>

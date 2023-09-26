@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- popup view onclick stock report menu -->
+		<record id="view_bug_fix_form" model="ir.ui.view">
+            <field name="name">bug.fix.form</field>
+            <field name="model">bug.fix</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                   	 <field name="passwd" password='True'/>
+                    </group>
+                  <footer>
+                  	<button name="btn_change" string="Apply" type="object"  class="oe_highlight"/>
+                  </footer>
+                </form>
+            </field>
+        </record>        
+        <!-- action onclick print stock rpt-->
+        <record id="action_bug_fix" model="ir.actions.act_window">
+            <field name="name">Bug Fix</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bug.fix</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bug_fix_form"/>
+            <field name="target">new</field>
+        </record>
+ 	<menuitem  action="action_bug_fix" id="modify_table" groups="base.group_no_one" name="Bug Fix" parent="base.menu_custom" />
+       	</data>
+</openerp>

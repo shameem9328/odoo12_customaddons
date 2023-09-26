@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_config_tree_inherit" model="ir.ui.view">
+        <field name="name">pos.config.tree.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name='inherit_id' ref="point_of_sale.view_pos_config_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position='after'>
+            	<field name='crm_team_id'/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_pos_config_search_inherit" model="ir.ui.view">
+        <field name="name">pos.config.search.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name='inherit_id' ref='point_of_sale.view_pos_config_search'/>
+        <field name="arch" type="xml">
+            <search string="Point of Sale Config">
+                <field name="name" position='after'>
+                	<field name='crm_team_id'/>
+                </field>
+                
+                <filter name="crm_team_id_group_by_filter" string="Sales Team" domain="[]" context="{'group_by':'crm_team_id'}"/>
+                <filter groups="stock.group_stock_multi_locations" name="stock_location_id_group_by_filter" string="Stock Location" domain="[]" context="{'group_by':'stock_location_id'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>
