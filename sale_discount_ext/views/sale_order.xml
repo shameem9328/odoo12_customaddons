@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="discount_sale_order_form_inherited" model="ir.ui.view">
+            <field name="name">discount.sale_order.form.inherited</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook/page/group" position="after">
+                    <div>
+                    	<label for="discount_rate" string="Discount Amount:"/>
+                        <field name="discount_rate" class="oe_inline"/><br/>
+                        <button name="add_discount_pdt" class="btn-primary" states="draft,sent" type="object" string="Apply Discount"/>
+                    				
+                    </div>
+                </xpath>
+                
+            </field>
+        </record>
+    </data>
+</odoo>
